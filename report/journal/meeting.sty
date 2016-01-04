@@ -1,0 +1,81 @@
+\NeedsTeXFormat{LaTeX2e}[1999/01/01]
+%% Nicolas Gibelin (at) imag.fr
+\ProvidesPackage{meeting}[2012/09/18]
+
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[francais]{babel}
+%\RequirePackage{lmodern}
+
+% Quelques options...
+\RequirePackage{fullpage}
+\RequirePackage{graphicx} 
+\RequirePackage{url}
+\RequirePackage{float}
+
+\RequirePackage[x11names]{xcolor}
+\RequirePackage{framed}
+\RequirePackage{listings}
+
+\RequirePackage{ifthen}
+%%\RequirePackage{xcomment}
+
+\RequirePackage[colorlinks]{hyperref}
+%%\RequirePackage[acronym,toc,shortcuts]{glossaries}
+%%\makeglossaries
+%%\loadglsentries{acronyms}
+
+% Pour utiliser une police sans serif dans la page
+\renewcommand{\rmdefault}{phv}
+
+% Les dimensions de page
+\oddsidemargin=-0,8cm
+\headsep=-1,5cm
+\textwidth 18cm
+\textheight 25,3cm
+
+%%%%%%%%%%%%%%%%%%%%% DEFINITIONS %%%%%%%%%%%%%%%%%%%%%
+
+\def\mi2s{Ums $MI^2S$}
+
+%%%%%%%%%%%%%%%%%%%%% INTRODUCTION %%%%%%%%%%%%%%%%%%%%
+
+\newenvironment{introduction}{%
+	\par\noindent\textbf{Remarques}:\noindent
+}{
+	\par\noindent
+}
+
+%%%%%%%%%%%%%%%%%%%%% SECTION REDEF %%%%%%%%%%%%%%%%%%%%
+\renewcommand\section{\@startsection{section}{1}{\z@}%
+ {-3.5ex \@plus -1ex \@minus -.2ex}%
+ {0.1ex}%
+ {\normalfont\Large\bfseries}}
+
+\let\presection=\section
+
+\renewcommand{\section}[1]{%
+ \presection{#1}\addcontentsline{toc}{section}{#1}\vspace{-1.5ex}%
+ \noindent\rule{\textwidth}{1pt}\vspace*{.5ex}}
+
+
+\lstset{ 
+    language=C, % choose the language of the code
+    basicstyle=\ttfamily,
+    keywordstyle=\color{blue}\ttfamily,
+    stringstyle=\color{orange}\ttfamily,
+    commentstyle=\color{gray}\ttfamily,
+    tabsize=2,
+    morecomment=[l][\color{magenta}]{\#}
+}
+
+\lstset{ 
+    language=bash, % choose the language of the code
+    basicstyle=\ttfamily,
+    showstringspaces=false,
+    keywordstyle=\color{blue}\ttfamily,
+    stringstyle=\color{orange}\ttfamily,
+    commentstyle=\color{gray}\ttfamily,
+    morecomment=[l][\color{gray}]{\#},
+    tabsize=2,
+    literate = {\$\#}{{{\$\#}}}2
+}

@@ -1,0 +1,280 @@
+\documentclass[utf8]{beamer}
+
+\usepackage{tikz}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% lstlisting
+% trick to use lstlisting and beamer overlay
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newsavebox{\lstbox}
+\usepackage{listings}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% hyperfer
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{hyperref}
+
+\hypersetup{
+  pdfauthor={Nicolas Gibelin},
+  pdftitle={Introduction \`a \LaTeX},
+  pdfkeywords={\TeX} {\LaTeX} {Initiation},
+  colorlinks=true,
+  urlcolor=gray,  % external links
+  linkcolor=white, % internal links
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% booktabs
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The package enhances the quality of tables
+\usepackage{booktabs}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Beamer theme and color definition
+%%
+%% See http://mcclinews.free.fr/latex/introbeamer
+%% for a top presentation of all beamer
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Theme
+\usetheme[width=2em]{Rochester}
+
+%%% \usetheme{nom du theme global}
+%%% \usecolortheme{nom du theme de couleur}
+%%% \usefonttheme{nom du theme de police}
+%%% \useinnertheme{nom du theme interne}
+%%% \useoutertheme{nom du theme externe}
+
+\useoutertheme[width=0pt]{sidebar}
+%\setbeamersize{sidebar width left=0pt}
+
+%%% Colors : http://mcclinews.free.fr/latex/introbeamer/les_couleurs.html
+\definecolor{themecolor}{HTML}{511123}
+\definecolor{themealter}{HTML}{115123}
+
+\usecolortheme[named=themecolor]{structure}
+
+%% Set background of all slides width shading
+\setbeamertemplate{background canvas}[vertical shading]%
+[top=structure.fg!70,bottom=structure.fg!05]
+
+%% Themes for beamerbox
+\beamerboxesdeclarecolorscheme{clair}{themecolor}{themecolor!20}
+
+%% Author(s), titles ....
+%% If you want $Rev: 48 $ svn property being replaced in this file, don't forget to
+%% had Rev Property to this file : svn propset svn:keywords "Rev" filename
+\date{Version 0.1 ($Rev: 48 $)}
+\author{Nicolas Gibelin\\%
+\href{mailto:Nicolas.Gibelin@imag.fr}{Nicolas.Gibelin@imag.fr}}
+\title{Title}
+\subtitle{Subtitle}
+
+
+%%% % Sommaire local. En deux colonnes
+%%% \begin{frame}{Plan}
+%%%   \begin{columns}[t]
+%%%   \begin{column}{5cm}
+%%%   \tableofcontents[sections={1-4},currentsection, hideothersubsections]
+%%%   \end{column}
+%%%   \begin{column}{5cm}
+%%%   \tableofcontents[sections={5-8},currentsection,hideothersubsections]
+%%%   \end{column}
+%%%   \end{columns}
+%%% \end{frame}
+
+%% Logo
+\logo{\includegraphics[height=0.5cm]{mi2s}}
+
+%% 
+%% Insertion of tac at each section/subsection call
+%%
+%\AtBeginSubsection[]
+\AtBeginSection[]
+ {
+  \begin{frame}<beamer>
+    \frametitle{Plan}
+%%    \tableofcontents[currentsection,currentsubsection]
+    {\tiny \tableofcontents[currentsection,hideothersubsections]}
+  \end{frame}
+ }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Sommaire en deux colonnes
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%\AtBeginSection[]
+%%{
+%%  \begin{frame}{Plan}
+%%    \begin{columns}[t]
+%%      \begin{column}{5cm}
+%%        \tableofcontents[sections={1-4},currentsection, hideothersubsections]
+%%      \end{column}
+%%      \begin{column}{5cm}
+%%        \tableofcontents[sections={5-8},currentsection,hideothersubsections]
+%%      \end{column}
+%%    \end{columns}
+%%  \end{frame} 
+%%}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Declare and image for title background image
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pgfdeclareimage[height=\paperheight,width=\paperwidth]{background}{background.jpg}
+
+\begin{document}
+
+%% Title page with transparent background image (use tikz)
+\setbeamertemplate{background canvas}{\tikz\node[opacity=0.3,inner sep=0]{\pgfuseimage{background}};}
+\frame{\titlepage}
+
+%% Restore shading
+\setbeamertemplate{background canvas}[vertical shading]%
+[top=structure.fg!70,bottom=structure.fg!05]
+\section{Introduction}
+
+\begin{frame}
+\begin{itemize}
+  \pause \item Test1
+  \pause \item Test2
+  \pause \item Test3
+  \pause \item Test4
+\end{itemize}
+\end{frame}
+
+\section{Astuces}
+
+\subsection{lstlisting and beamer overprint}
+
+\begin{lrbox}{\lstbox}
+{\tiny\begin{lstlisting}
+\begin{itemize}
+  \item premier
+  \begin{enumerate}
+    \item premier sous-item
+    \item second sous-item
+  \end{enumerate}
+  \item second
+\end{itemize}
+\begin{description}
+  \item[Premier] Premier item
+  \item[Second] Second item
+\end{description}
+\end{lstlisting}}
+\end{lrbox}
+
+\begin{frame}[fragile]
+  \frametitle{lstlisting and beamer overprint}
+  \begin{itemize}
+      \pause \item itemize
+      \pause \item enumerate
+      \pause \item description
+  \end{itemize}
+  \begin{overprint}
+    \onslide<5>
+    \begin{exampleblock}{\LaTeX}
+      {\tiny\begin{itemize}
+      \item premier
+        \begin{enumerate}
+        \item premier sous-item
+        \item second sous-item
+        \end{enumerate}
+      \item second
+      \end{itemize}
+      \begin{description}
+        \item[Premier] Premier item
+        \item[Second] Second item
+      \end{description}}
+    \end{exampleblock}
+    \onslide<6>
+    \begin{block}{Code \LaTeX}
+      {\usebox{\lstbox}}
+    \end{block}
+    \onslide<7>
+    \begin{block}{Red\'efinition}
+      Vous pouvez changer les puces et le format de num\'erotation : voir la
+      mise en forme avanc\'ee sur \href{http://fr.wikibooks.org/wiki/LaTeX/}{Wikibooks}
+    \end{block}
+  \end{overprint}
+\end{frame}
+
+
+\subsection{Color theme change}
+
+\setbeamertemplate{background canvas}[vertical shading]%
+[top=themealter!05,bottom=themealter!90]
+\begin{frame}
+\frametitle{Color theme change}
+\end{frame}
+
+\subsection{Color theme restore default}
+
+\setbeamertemplate{background canvas}[vertical shading]%
+[top=structure.fg!80,bottom=structure.fg!05]
+%%\setbeamertemplate{background canvas}[default]
+\begin{frame}
+\frametitle{Color theme restore default}
+\end{frame}
+
+\section{Divers}
+
+\setbeamertemplate{blocks}[rounded]%
+[shadow=true]
+\begin{frame}
+\frametitle{Divers}
+\begin{block}{Bloc arrondi et ombré}
+  Un bloc avec option rounded et shadow
+  Un peu d'ombre en plus\dots
+\end{block}
+
+\begin{alertblock}{Un bloc très alerte}
+  Texte du block \texttt{alertblock}
+\end{alertblock}
+
+\begin{exampleblock}{Un bloc exemplaire}
+  Exemple de block \texttt{exampleblock}
+\end{exampleblock}
+
+\begin{beamerboxesrounded}%
+      [lower=structure, %
+       upper=block title,%
+       shadow=true]%
+      {Beamer Box Rounded}
+    Texte à l'intérieur de la boîte arrondie
+\end{beamerboxesrounded}
+
+\begin{beamerboxesrounded}%
+      [scheme=clair, shadow=true]%
+      {Un bloc arrondi}
+Texte en boîte arrondie de toutes les couleurs
+\end{beamerboxesrounded}
+
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+  \item<1-> l'élément de liste apparaîtra depuis la couche numéro 1.
+  \item<2-> \textbf<2>{l'élément de liste apparaîtra en gras
+            sur la couche 2 puis normalement.}
+  \item<3-> l'élément de liste apparaîtra depuis la couche numéro 3.
+  \item<2-> l'élément de liste apparaîtra depuis la couche numéro 2.
+  \item<4-> l'élément de liste apparaîtra depuis la couche numéro 4.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}[<+->]
+    \item l'élément de liste apparaîtra depuis la couche numéro 1.
+    \item \textbf<.>{l'élément de liste apparaîtra en gras 
+                    sur la couche 2 puis normalement.}
+    \item l'élément de liste apparaîtra depuis la couche numéro 3.  
+  \end{itemize}
+\end{frame}
+
+\section{Questions ?}
+
+\setbeamertemplate{background canvas}[default]
+\setbeamercolor{background canvas}{bg=themealter!20}
+\begin{frame}
+\end{frame}
+
+\end{document}
