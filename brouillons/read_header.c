@@ -135,78 +135,78 @@ int main(){
 		x = bitread(bfichier);
 		test = test | (x << (31-i));
 	}
-	if (test == 1) printf("Original version of ELF");
-	else printf("Not original version of ELF");
+	if (test == 1) printf("Original version of ELF\n");
+	else printf("Not original version of ELF\n");
 	test = 0;
 
 	for (i=0; i<32; i++){
 		x = bitread(bfichier);
 		test = test | (x << (31-i));
 	}
-	printf("Memory adress of the entry point : 0x%04X", test);
+	printf("Memory adress of the entry point : 0x%04X\n", test);
 	test = 0;
 
 	for (i=0; i<32; i++){
 		x = bitread(bfichier);
 		test = test | (x << (31-i));
 	}
-	printf("Start of the program header table : %d", test);
+	printf("Start of the program header table : %d\n", test);
 	test = 0;
 
 	for (i=0; i<32; i++){
 		x = bitread(bfichier);
 		test = test | (x << (31-i));
 	}
-	printf("Start of the section header table : %d", test);
+	printf("Start of the section header table : %d\n", test);
 	test = 0;
 
 	for (i=0; i<32; i++){
 		x = bitread(bfichier);
 		test = test | (x << (31-i));
 	}
-	printf("Flags : 0x%04X", test);
+	printf("Flags : 0x%04X\n", test);
 	test = 0;
 
 	for (i=0; i<16; i++){
 		x = bitread(bfichier);
 		test = test | (x << (15-i));
 	}
-	printf("Size of the header : %d", test);
+	printf("Size of the header : %d\n", test);
 	test = 0;
 
 	for (i=0; i<16; i++){
 		x = bitread(bfichier);
 		test = test | (x << (15-i));
 	}
-	printf("Size of a program header table entry : %d", test);
+	printf("Size of a program header table entry : %d\n", test);
 	test = 0;
 
 	for (i=0; i<16; i++){
 		x = bitread(bfichier);
 		test = test | (x << (15-i));
 	}
-	printf("Number of entries in the program header table : %d", test);
+	printf("Number of entries in the program header table : %d\n", test);
 	test = 0;
 
 	for (i=0; i<16; i++){
 		x = bitread(bfichier);
 		test = test | (x << (15-i));
 	}
-	printf("Size of a section header table entry : %d", test);
+	printf("Size of a section header table entry : %d\n", test);
 	test = 0;
 
 	for (i=0; i<16; i++){
 		x = bitread(bfichier);
 		test = test | (x << (15-i));
 	}
-	printf("Number of entries in the section header table : %d", test);
+	printf("Number of entries in the section header table : %d\n", test);
 	test = 0;
 
 	for (i=0; i<16; i++){
 		x = bitread(bfichier);
 		test = test | (x << (15-i));
 	}
-	printf("Index of the section header table entry : %d", test);
+	printf("Index of the section header table entry : %d\n", test);
 
 	return 0;
 }
