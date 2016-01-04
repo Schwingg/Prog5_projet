@@ -1,5 +1,5 @@
 #include "bfile.h"
-#define <stdio.h>
+#include <stdio.h>
 
 FILE* fichier;
 BFILE* bfichier;
