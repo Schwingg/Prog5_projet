@@ -6,3 +6,5 @@ L’objectif de ce projet est d’impl ́ementer une sous partie d’un  ́edite
 est centr ́e sur la derni`ere phase, dite de r ́eimplantation, ex ́ecut ́ee par l’ ́editeur de liens. Le projet est structur ́e
 en  ́etapes, avec la programmation de plusieurs outils interm ́ediaires, permettant de mieux comprendre les
 principales notions et de simplifier le d ́ecoupage des tˆaches.
+
+Alexandre : Je serais là pour environ 9h demain.
