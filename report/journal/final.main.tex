@@ -1,0 +1,161 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[francais]{babel}
+\usepackage{meeting}
+\usepackage{xcolor}
+\setcounter{section}{-1}
+\title{Apn\'ee 2: Test de programmes}
+
+
+\author{Georges Schwing, Christopher Gil}
+
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Objectifs}
+
+L'objectif de cette APNEE est de réaliser un script implémentant un 
+système de gestion de fichiers mis au rebut similaire à la corbeille 
+présente dans la plupart des interfaces graphiques. Les différentes 
+parties sont progressives et vous permettent de construire votre 
+script de manière incrémentale. Pensez à conserver une copie de 
+votre travail à chaque étape afin de réaliser votre compte rendu. 
+
+\section{Première version}
+
+Dans sa première version, le script corbeille devra déplacer tous 
+les fichiers dont les noms lui seront donnés en arguments de la 
+ligne de commande dans le répertoire suivant:
+\begin{lstlisting}
+$HOME/.corbeille
+\end{lstlisting}
+en créant au préalable ce répertoire s'il n'existe pas. Nous 
+supposerons que les noms de fichier donnés sont absolus ou relatifs 
+au répertoire courant. Attention, n'oubliez pas que les noms de 
+fichier peuvent être quelconques et, par exemple, contenir des 
+caractères particuliers (espace, ?, *, ...). D'après vous, pourquoi 
+le nom du répertoire suivant: 
+\begin{lstlisting}
+$HOME/.corbeille 
+\end{lstlisting} 
+comporte-t-il un point ? D'après vous, comment devez vous traiter 
+le cas d'arguments qui ne correspondent pas à un nom de fichier ?
+
+\subsection{le script produit}
+
+Le script suivant permet de gérer l'effacement des fichiers passés 
+en paramètres. Il permet de gérer les caractères spéciaux et les 
+espaces. Ce script vérifie aussi si les dossier ou les fichiers 
+passés en paramètres existes ou non et si ils sont accessible en 
+écriture (nécessaire pour le déplacement).
+
+\begin{lstlisting}[frame=single, language=bash]
+#!/bin/bash
+#specifie ici le dossier de la corbeille
+trashdir=~/.corbeille
+
+
+suppr(){
+	#rajout de l'antislash necessaire aux tests
+	antislash=`echo "$1" | sed "s/\ /\\\ /"`
+	if [ -d "$antislash" -o -f "$antislash" ] ; then
+		#le fichier ou le dossier existe
+		if [ -w "$antislash" ] ; then
+			#peut on ecrire le fichioer ( le deplacer)
+			mv "$antislash" $trashdir
+		else
+			echo "Vous n'avez pas les droits en ecriture sur $1"
+		fi
+	else
+		echo "Le fichier ou le dossier $1 n'existe pas"
+	fi
+}
+
+
+init(){
+	#verification de la non presence du dossier de la corbeille
+	#et creation si besoin
+	if [ ! -d $trashdir ] ; then
+		mkdir $trashdir 
+	fi
+}
+
+init
+#verification de la presence de parametres
+if [ $# -eq 0 ] ; then
+	#il n'y a pas de parametres
+	echo "Vous devez passer des parametres !!!!!"
+else
+	#il y a des paramaetres
+	for ((i=1;i<=$#;i++)) ; do
+		suppr "$(eval echo "\$$i")"
+	done
+fi
+\end{lstlisting}
+
+\section{Deuxième version}
+
+Votre script doit maintenant accepter une commande comme premier 
+argument. Cette commande pourra être : 
+\begin{itemize}
+\item \textbf{efface} : dans ce cas, les arguments qui suivent la 
+commande correspondront à des noms de fichier à déplacer vers le 
+répertoire suivant :
+\begin{lstlisting}
+$HOME/.corbeille
+\end{lstlisting}
+
+\item \textbf{restaure} : dans ce cas, les arguments qui suivent la 
+commande correspondront à des noms de fichier à déplacer depuis le 
+répertoire suivant :
+\begin{lstlisting}
+$HOME/.corbeille
+\end{lstlisting}
+vers le répertoire courant. Le nom de chaque fichier à restaurer 
+devra être donné tel qu'il était avant effacement du fichier et ce 
+nom sera le nom du fichier une fois restauré (on restaure à 
+l'endroit original). Attention si un nom de fichier comporte des 
+répertoires intermédiaires, il faudra créer ceux-ci s'ils n'existent 
+pas (ou plus)
+
+\item \textbf{info} : dans ce cas, pour chacun des arguments qui 
+suivent la commande, il faudra afficher les infos concernant les 
+fichiers de nom correspondant (s'ils se trouvent dans la corbeille, 
+depuis combien de temps, ...). Si aucun argument n'est donné, il 
+faudra afficher des infos sur tous les fichiers contenus dans la 
+corbeille
+
+\item \textbf{vide} : dans ce cas, il faudra supprimer de la 
+corbeille les fichiers dont le nom sera donné en argument de la 
+commande ou vider totalement la corbeille si aucun argument n'est 
+donné
+\end{itemize}
+Attention, pour cette question vous aurez à stocker, sous la forme 
+que vous voudrez, des meta informations sur les fichiers de la 
+corbeille, en particulier la localisation originale de chaque 
+fichier. 
+
+\subsection{Structure du fichier meta}
+
+Nous avons décidés d'utiliser un fichier meta qui contient dans 
+l'ordre les informations suivantes :
+\begin{itemize}
+	\item le dossier contenant le fichier ou le dossier effacé
+	\item la date d'effacement du fichier
+	\item l’arborescence du fichier ou du dossier d'origine
+\end{itemize}
+Les informations sont séparés par le caractère espace. Le fait que 
+ce caractère est un caractère possible dans une arborescence n'est 
+pas un problèmes car l'arborescence est donner en dernier dans la 
+ligne du fichier.
+\subsection{Le script produit}
+
+Le script produit dans le cadre de la question deux permet toujours 
+de gérer les cas spéciaux qui ont était abordé dans la première 
+partie.
+
+\end{document}
