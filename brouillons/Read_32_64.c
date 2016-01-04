@@ -1,10 +1,10 @@
-#define "bfile.h"
-#define <stdio.h>
+#include "bfile.h"
+#include <stdio.h>
 
-file* fichier;
-bfile* bfichier;
+FILE* fichier;
+BFILE* bfichier;
 
-int main{
+int main(){
 	fichier = fopen("matrice.o","r");
 	bfichier = bstart(fichier,"r");
 	int i,x;
@@ -12,7 +12,11 @@ int main{
 	for (i=0; i<32; i++){x = bitread(bfichier);}
 	for (i=0; i<8; i++){
 		x = bitread(bfichier);
-		bits = bits | (x << (8-i));
+		printf("%d",x);
+		bits = bits | (x << (7-i));
 	}
+	
+	printf("%d",bits);
+	
 	return 0;
 }
