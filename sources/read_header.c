@@ -4,8 +4,8 @@
 BFILE* bfichier;
 
 void read_header(BFILE* bfichier) {
-    int i, x;
-    int test = 0;
+    int i, x, nbbit, endian;
+    unsigned int test = 0;
 
     for (i = 0; i < 32; i++) {
         x = bitread(bfichier);
@@ -22,9 +22,11 @@ void read_header(BFILE* bfichier) {
             break;
         case 0x1:
             printf("32 bits\n");
+            nbbit = 32;
             break;
         case 0x2:
             printf("64 bits\n");
+            nbbit = 64;
             break;
     }
     test = 0;
@@ -40,9 +42,11 @@ void read_header(BFILE* bfichier) {
             break;
         case 0x1:
             printf("Little Endian\n");
+            endian = 1;
             break;
         case 0x2:
             printf("Big Endian\n");
+            endian = 0;
             break;
     }
     test = 0;
@@ -58,7 +62,7 @@ void read_header(BFILE* bfichier) {
     }
     test = 0;
 
-	// OS Type
+    // OS Type
     for (i = 0; i < 8; i++) {
         x = bitread(bfichier);
         test = test | (x << (7 - i));
@@ -97,7 +101,7 @@ void read_header(BFILE* bfichier) {
     }
     test = 0;
 
-	//Application Binary Interface Version
+    //Application Binary Interface Version
     for (i = 0; i < 8; i++) {
         x = bitread(bfichier);
         test = test | (x << (7 - i));
@@ -109,7 +113,7 @@ void read_header(BFILE* bfichier) {
         x = bitread(bfichier);
     }
 
-	//Type of ELF file
+    //Type of ELF file
     for (i = 0; i < 16; i++) { //Read 2 bytes
         x = bitread(bfichier);
         test = test | (x << (15 - i));
@@ -131,7 +135,7 @@ void read_header(BFILE* bfichier) {
     }
     test = 0;
 
-	//Target architecture
+    //Target architecture
     for (i = 0; i < 16; i++) {
         x = bitread(bfichier);
         test = test | (x << (15 - i));
@@ -170,7 +174,7 @@ void read_header(BFILE* bfichier) {
     }
     test = 0;
 
-	//Version
+    //Version
     for (i = 0; i < 32; i++) { //Read 4 octets
         x = bitread(bfichier);
         test = test | (x << (31 - i));
@@ -179,74 +183,114 @@ void read_header(BFILE* bfichier) {
     else printf("Not original version of ELF\n");
     test = 0;
 
-	//Memory address of the entry point
-    for (i = 0; i < 32; i++) {
+    //Memory address of the entry point
+    for (i = 0; i < nbbit; i++) {
         x = bitread(bfichier);
-        test = test | (x << (31 - i));
+        if (endian == 0) {
+            test = test | (x << ((nbbit - 1) - i));
+        } else {
+            test = test | (x << ((nbbit - 1) - (nbbit - i)));
+        }
     }
     printf("Memory address of the entry point : 0x%04X\n", test);
     test = 0;
 
-	//
-    for (i = 0; i < 32; i++) {
+    //offset header
+    for (i = 0; i < nbbit; i++) {
         x = bitread(bfichier);
-        test = test | (x << (31 - i));
+        if (endian == 0) {
+            test = test | (x << ((nbbit - 1) - i));
+        } else {
+            test = test | (x << ((nbbit - 1) - (nbbit - i)));
+        }
     }
-    printf("Start of the program header table : %d\n", test);
+    printf("Start of the program header table : 0x%08X\n", test);
+    test = 0;
+    //offset  section table
+    for (i = 0; i < nbbit; i++) {
+        x = bitread(bfichier);
+        if (endian == 0) {
+            test = test | (x << ((nbbit - 1) - i));
+        } else {
+            test = test | (x << ((nbbit - 1) - (nbbit - i)));
+        }
+    }
+    printf("Start of the section header table : 0x%08X\n", test);
     test = 0;
 
     for (i = 0; i < 32; i++) {
         x = bitread(bfichier);
-        test = test | (x << (31 - i));
-    }
-    printf("Start of the section header table : %d\n", test);
-    test = 0;
-
-    for (i = 0; i < 32; i++) {
-        x = bitread(bfichier);
-        test = test | (x << (31 - i));
+        if (endian == 0) {
+            test = test | (x << (31 - i));
+        } else {
+            test = test | (x << (31 - (32 - i)));
+        }
     }
     printf("Flags : 0x%04X\n", test);
     test = 0;
 
     for (i = 0; i < 16; i++) {
         x = bitread(bfichier);
-        test = test | (x << (15 - i));
+        if (endian == 0) {
+            test = test | (x << (15 - i));
+        } else {
+            test = test | (x << (15 - (16 - i)));
+        }
     }
-    printf("Size of the header : %d\n", test);
+    printf("Size of the header : %u\n", test);
     test = 0;
 
     for (i = 0; i < 16; i++) {
         x = bitread(bfichier);
-        test = test | (x << (15 - i));
+        if (endian == 0) {
+            test = test | (x << (15 - i));
+        } else {
+            test = test | (x << (15 - (16 - i)));
+        }
     }
     printf("Size of a program header table entry : %d\n", test);
     test = 0;
 
     for (i = 0; i < 16; i++) {
         x = bitread(bfichier);
-        test = test | (x << (15 - i));
+        if (endian == 0) {
+            test = test | (x << (15 - i));
+        } else {
+            test = test | (x << (15 - (16 - i)));
+        }
     }
     printf("Number of entries in the program header table : %d\n", test);
     test = 0;
 
     for (i = 0; i < 16; i++) {
         x = bitread(bfichier);
-        test = test | (x << (15 - i));
+        if (endian == 0) {
+            test = test | (x << (15 - i));
+        } else {
+            test = test | (x << (15 - (16 - i)));
+        }
     }
     printf("Size of a section header table entry : %d\n", test);
     test = 0;
 
     for (i = 0; i < 16; i++) {
         x = bitread(bfichier);
-        test = test | (x << (15 - i));
+        if (endian == 0) {
+            test = test | (x << (15 - i));
+        } else {
+            test = test | (x << (15 - (16 - i)));
+        }
     }
     printf("Number of entries in the section header table : %d\n", test);
     test = 0;
 
     for (i = 0; i < 16; i++) {
         x = bitread(bfichier);
-        test = test | (x << (15 - i));
+        if (endian == 0) {
+            test = test | (x << (15 - i));
+        } else {
+            test = test | (x << (15 - (16 - i)));
+        }
     }
     printf("Index of the section header table entry : %d\n", test);
 }
