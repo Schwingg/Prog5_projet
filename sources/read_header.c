@@ -2,6 +2,7 @@
 
 FILE *fichier;
 
+// Skips octet bytes
 void jump(int octet) {
     int temp=0,i;
 	for (i=0; i<octet; i++){
@@ -9,6 +10,7 @@ void jump(int octet) {
 	}
 }
 
+// Reads octet bytes, taking in account the Endianness
 int read(int octet, int endian) {
     int i, estlu=0,temp=0;
     if (endian == 0) {
@@ -26,6 +28,7 @@ int read(int octet, int endian) {
     return estlu;
 }
 
+// Reads the header of the file *fichier
 int read_header(FILE *fichier) {
     int i, nbbit, endian = 0;
     int test;
@@ -189,24 +192,31 @@ int read_header(FILE *fichier) {
     test = (read((nbbit / 8), endian));
     printf("Start of the section header table : %d\n", test);
 
+   //flags
     test = read(4, endian);
     printf("Flags : 0x%04X\n", test);
 
+    //header size
     test = read(2, endian);
     printf("Size of the header : %d\n", test);
 
+    //size of the program header section
     test = read(2, endian);
     printf("Size of a program header table entry : %d\n", test);
 
+    //number of entries in the program header section
     test = read(2, endian);
     printf("Number of entries in the program header table : %d\n", test);
 
+    // size of a section
     test = read(2, endian);
     printf("Size of a section header table entry : %d\n", test);
 
+    //number of entries in the section header table
     test = read(2, endian);
     printf("Number of entries in the section header table : %d\n", test);
 
+    //index of the section header table entry
     test = read(2, endian);
     printf("Index of the section header table entry : %d\n", test);
 

@@ -1,19 +1,19 @@
 
 
 /*
- contient la fonction permettant de faire la lecture du header
+ Contains the function allowing to read the header
  */
 int read_header(FILE *fichier);
 
 /*
- * permet de sauter un nombre definit d'octet
- * octet est le noombre d'octet qu'il faut sauter 
+ Allows to skip a defined number of bytes
+ octet is the number of bytes to skip 
  */
 void jump(int octet);
 
 /*
- * permet de lire un nombre definit d'octet soit en little soit en big endian
- * octet indique le nombre d'octet quil faut lire 
- * endian est la methode dencodage 1 pour little 0 pour big
+ Allows to read a defined number of bytes either in Little or Big Endian
+ octet indicates the number of bytes to read
+ endian indicates the Endianness : 1 for Little, 0 for Big
  */
 int read(int octet, int endian);
