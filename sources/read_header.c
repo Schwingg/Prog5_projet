@@ -2,10 +2,7 @@
 #include "read_header.h"
 #include "stdlib.h"
 
-FILE *fichier;
-
 // Skips octet bytes
-
 void jump(int octet) {
     int temp = 0, i;
     for (i = 0; i < octet; i++) {
