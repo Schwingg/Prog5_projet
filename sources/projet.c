@@ -1,5 +1,6 @@
 #include "stdio.h"
 #include "read_header.h"
+#include "projet.h"
 
 FILE *fichier = NULL;
 
