@@ -49,7 +49,7 @@ int main(int argc, char *argv[]) {
                 printf("Little Endian\n");
                 break;
             case 0x2:
-                printf("Big Ednian\n");
+                printf("Big Endian\n");
                 break;
         }
         test = 0;
