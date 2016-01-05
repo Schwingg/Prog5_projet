@@ -1,6 +1,6 @@
 
 
-typedef struct header{
+typedef struct{
 int ELF;
 int nbbit;
 int endian;
@@ -18,7 +18,7 @@ int indexSection;
 /*
  Contains the function allowing to read the header
  */
-int read_header(FILE *fichier);
+HEADER *read_header(FILE *fichier);
 
 /*
  Allows to skip a defined number of bytes
