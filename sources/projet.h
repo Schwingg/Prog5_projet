@@ -14,4 +14,4 @@ int main();
  permet de quitter le programme tout en specifiant si il y a un probleme
  */
 
-void ferme(int error);
+void ferme();
