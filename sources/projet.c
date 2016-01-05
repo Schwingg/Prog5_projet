@@ -5,7 +5,7 @@
 FILE *fichier = NULL;
 BFILE* bfichier;
 
-void ferme(int error) {
+void ferme() {
     fclose(fichier);
     bstop(bfichier);
 }
@@ -21,9 +21,10 @@ int main(int argc, char *argv[]) {
         }
         bfichier = bstart(fichier, "r");
         if (read_header(bfichier)) {
-            ferme(0);
+            ferme();
             return 0;
         } else {
+            ferme();
             return 1;
         }
     } else {
