@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) {
             return 1;
         }
         hed = read_header(fichier); // No error during header reading
-        if (hed->ELF == 1 && hed->EI_DATA == 0) {
+        if (hed->ELF == 1 && hed->EI_DATA == 0 && hed->EI_CLASS == 32) {
             ferme();
             //Starting the reading of the section header
             (fichier = fopen(argv[1], "r"));
