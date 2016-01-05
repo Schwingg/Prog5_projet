@@ -1,5 +1,20 @@
 
 
+typedef struct header{
+int ELF;
+int nbbit;
+int endian;
+int entryPoint;
+int startHeader;
+int startSection;
+int sizeTableHeader;
+int nbEntryProgram;
+int sizeSection;
+int nbEntrySection;
+int indexSection;
+} HEADER;
+
+
 /*
  Contains the function allowing to read the header
  */
