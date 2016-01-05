@@ -3,11 +3,9 @@
 #include "read_header.h"
 
 FILE *fichier = NULL;
-BFILE* bfichier;
 
 void ferme() {
     fclose(fichier);
-    bstop(bfichier);
 }
 
 int main(int argc, char *argv[]) {
@@ -19,8 +17,7 @@ int main(int argc, char *argv[]) {
             printf("impossible de lire le fichier\n");
             return 1;
         }
-        bfichier = bstart(fichier, "r");
-        if (read_header(bfichier)) {
+        if (read_header(fichier)) {
             ferme();
             return 0;
         } else {

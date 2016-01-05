@@ -1,32 +1,33 @@
 #include "bfile.h"
 #include "stdio.h"
 
-BFILE* bfichier;
+FILE *fichier;
 
 void jump(int octet) {
-    int i;
-    for (i = 0; i < (8 * octet); i++) {
-        bitread(bfichier);
-    }
+    int temp=0,i;
+	for (i=0; i<octet; i++){
+		fread(&temp,sizeof(char),1,fichier);
+	}
 }
 
 int read(int octet, int endian) {
-    int i, j, estlu = 0;
+    int i, estlu=0,temp=0;
     if (endian == 0) {
-        for (i = 0; i < (8 * octet); i++) {
-            estlu = estlu | (bitread(bfichier) << ((8 * octet) - 1 - i));
-        }
+		for (i=0; i<octet; i++){
+			fread(&temp,sizeof(char),1,fichier);		
+			estlu = estlu | temp << 8*(octet - 1 - i);
+			
+		}
     } else {
         for (i = 0; i < octet; i++) {
-            for (j = 0; j < 8; j++) {
-                estlu = estlu | bitread(bfichier) << ((8 * i) + 7 - j);
-            }
+			fread(&temp,sizeof(char),1,fichier);
+			estlu = estlu | temp << 8*i;
         }
     }
     return estlu;
 }
 
-int read_header(BFILE* bfichier) {
+int read_header(FILE *fichier) {
     int i, nbbit, endian = 0;
     int test;
 

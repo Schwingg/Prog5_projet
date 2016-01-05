@@ -3,7 +3,7 @@
 /*
  contient la fonction permettant de faire la lecture du header
  */
-int read_header(BFILE* bfichier);
+int read_header(FILE *fichier);
 
 /*
  * permet de sauter un nombre definit d'octet
