@@ -14,12 +14,45 @@ int main(int argc, char *argv[]) {
         int i, x;
         int test = 0;
 
-        for (i = 0; i < 48; i++) {
+        for (i = 0; i < 32; i++) {
             x = bitread(bfichier);
-        } //We jump the magic numbers and the octets for 32/64 bits and the endian (6 octets)
+        } //We jump the magic numbers (4 octets)
 
-        printf("32 bits\n"); //We only work with the ELF32 format
-        printf("Big Endian\n"); // We only work in Big Endian
+        //on lit le 
+        for (i = 0; i < 8; i++) {
+            x = bitread(bfichier);
+            test = test | (x << (7 - i));
+        }
+        switch (test) {
+            case 0x0:
+                printf("aucun bit???????????\n");
+                break;
+            case 0x1:
+                printf("32 bits\n");
+                break;
+            case 0x2:
+                printf("64 bits\n");
+                break;
+        }
+        test = 0;
+
+        for (i = 0; i < 8; i++) {
+            x = bitread(bfichier);
+            test = test | (x << (7 - i));
+        }
+
+        switch (test) {
+            case 0x0:
+                printf("aucun ??????????????\n");
+                break;
+            case 0x1:
+                printf("Little Endian\n");
+                break;
+            case 0x2:
+                printf("Big Ednian\n");
+                break;
+        }
+        test = 0;
 
         for (i = 0; i < 8; i++) { //We read 1 octet
             x = bitread(bfichier); //We read byte after byte
