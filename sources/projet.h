@@ -1,8 +1,3 @@
-#ifndef __PROJET__
-#define __PROJET__
-
-
-
 
 /*
  Contains the project's main function, with file passed as a parameter
