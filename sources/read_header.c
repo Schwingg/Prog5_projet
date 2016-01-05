@@ -1,4 +1,6 @@
 #include "stdio.h"
+#include "read_header.h"
+#include "stdlib.h"
 
 FILE *fichier;
 
@@ -32,10 +34,13 @@ int read(int octet, int endian) {
 
 // Reads the header of the file *fichier
 
-int read_header(FILE *fichier) {
+HEADER *read_header(FILE *fichier) {
     int i, nbbit, endian = 0;
     int test;
-
+    HEADER *hed;
+    hed = (HEADER *) malloc(sizeof (HEADER));
+    if (hed == NULL)
+        return NULL;
     jump(1);
 
     char elf[3] = {'E', 'L', 'F'};
@@ -43,9 +48,11 @@ int read_header(FILE *fichier) {
         test = read(1, endian);
         if (test != elf[i]) {
             printf("This is not an ELF file\n");
-            return 1;
+            hed->ELF = 0;
+            return hed;
         }
     }
+    hed->ELF = 1;
     printf("Class                                           ELF");
 
     //Read the bits indicating the addressing size
@@ -226,5 +233,5 @@ int read_header(FILE *fichier) {
     test = read(2, endian);
     printf("Index of the section header table entry :       %d\n", test);
 
-    return 0;
+    return hed;
 }
