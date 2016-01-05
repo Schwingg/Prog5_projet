@@ -7,12 +7,15 @@ void ferme() {
     fclose(fichier);
 }
 
+void desalloc() {
+    free(hed);
+}
+
 int main(int argc, char *argv[]) {
-    HEADER *hed;
-    hed = (HEADER *) malloc(sizeof (HEADER));
-    if (hed == NULL)
-        return 1;
     if (argc == 2) {
+        hed = (HEADER *) malloc(sizeof (HEADER));
+        if (hed == NULL)
+            return 1;
         if ((fichier = fopen(argv[1], "r"))) {
             /* Open the file passed in argv[1] */
         } else {
@@ -22,11 +25,11 @@ int main(int argc, char *argv[]) {
         hed = read_header(fichier); // No error during header reading
         if (hed->ELF == 1) {
             ferme();
-            free(hed);
+            desalloc();
             return 0;
         } else {// Header reading returned an error
             ferme();
-            free(hed);
+            desalloc();
             return 1;
         }
     } else {// argv[1] is empty
