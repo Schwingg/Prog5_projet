@@ -3,10 +3,12 @@
 #include "projet.h"
 #include "stdlib.h"
 
+//Closes the file
 void ferme() {
     fclose(fichier);
 }
 
+//frees the structure
 void desalloc() {
     free(hed);
 }
