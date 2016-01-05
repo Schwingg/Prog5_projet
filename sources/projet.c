@@ -22,9 +22,11 @@ int main(int argc, char *argv[]) {
         hed = read_header(fichier); // No error during header reading
         if (hed->ELF == 1) {
             ferme();
+            free(hed);
             return 0;
         } else {// Header reading returned an error
             ferme();
+            free(hed);
             return 1;
         }
     } else {// argv[1] is empty
