@@ -2,16 +2,17 @@
 
 typedef struct{
 int ELF;
-int nbbit;
-int endian;
-int entryPoint;
-int startHeader;
-int startSection;
-int sizeTableHeader;
-int nbEntryProgram;
-int sizeSection;
-int nbEntrySection;
-int indexSection;
+int EI_CLASS;
+int EI_DATA;
+int e_entry;
+int e_phoff;
+int e_shoff;
+int e_ehsize;
+int e_phentsize;
+int e_phnum;
+int e_shentsize;
+int e_shnum;
+int e_shstrndx;
 } HEADER;
 
 
