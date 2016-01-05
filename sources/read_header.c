@@ -3,32 +3,35 @@
 FILE *fichier;
 
 // Skips octet bytes
+
 void jump(int octet) {
-    int temp=0,i;
-	for (i=0; i<octet; i++){
-		fread(&temp,sizeof(char),1,fichier);
-	}
+    int temp = 0, i;
+    for (i = 0; i < octet; i++) {
+        fread(&temp, sizeof (char), 1, fichier);
+    }
 }
 
 // Reads octet bytes, taking in account the Endianness
+
 int read(int octet, int endian) {
-    int i, estlu=0,temp=0;
+    int i, estlu = 0, temp = 0;
     if (endian == 0) {
-		for (i=0; i<octet; i++){
-			fread(&temp,sizeof(char),1,fichier);		
-			estlu = estlu | temp << 8*(octet - 1 - i);
-			
-		}
+        for (i = 0; i < octet; i++) {
+            fread(&temp, sizeof (char), 1, fichier);
+            estlu = estlu | temp << 8 * (octet - 1 - i);
+
+        }
     } else {
         for (i = 0; i < octet; i++) {
-			fread(&temp,sizeof(char),1,fichier);
-			estlu = estlu | temp << 8*i;
+            fread(&temp, sizeof (char), 1, fichier);
+            estlu = estlu | temp << 8 * i;
         }
     }
     return estlu;
 }
 
 // Reads the header of the file *fichier
+
 int read_header(FILE *fichier) {
     int i, nbbit, endian = 0;
     int test;
@@ -39,31 +42,33 @@ int read_header(FILE *fichier) {
     for (i = 0; i < 3; i++) {
         test = read(1, endian);
         if (test != elf[i]) {
-            printf("Ce nest pas un fichier ELF\n");
+            printf("This is not an ELF file\n");
             return 1;
         }
     }
+    printf("Class                                           ELF");
 
     //Read the bits indicating the addressing size
     test = read(1, endian);
     switch (test) {
         case 0x0:
-            printf("aucun bit???????????\n");
+            printf("/n No indication about address size?\n");
             break;
         case 0x1:
-            printf("32 bits\n");
+            printf("32/bits\n");
             nbbit = 32;
             break;
         case 0x2:
-            printf("64 bits\n");
+            printf("64/bits\n");
             nbbit = 64;
             break;
     }
     //Little or Big Endian reading and test
+    printf("Data:                                           ");
     test = read(1, endian);
     switch (test) {
         case 0x0:
-            printf("aucun ??????????????\n");
+            printf("No indication about endianness\n");
             break;
         case 0x1:
             printf("Little Endian\n");
@@ -74,15 +79,13 @@ int read_header(FILE *fichier) {
             endian = 0;
             break;
     }
-
+    printf("Version:                                        ");
     test = read(1, endian);
-    if (test == 1) {
-        printf("Original version of ELF\n");
-    } else {
-        printf("Not original version of ELF\n");
-    }
+    printf("%d\n", test);
+    test = 0;
 
     // OS Type
+    printf("OS type:                                        ");
     test = read(1, endian);
     switch (test) {
         case 0x0:
@@ -119,11 +122,12 @@ int read_header(FILE *fichier) {
 
     //Application Binary Interface Version
     test = read(1, endian);
-    printf("ABI Version : %d\n", test);
+    printf("ABI Version :                                   %d\n", test);
 
     jump(7);
 
     //Type of ELF file
+    printf("Type:                                           ");
     test = read(2, endian);
     switch (test) {
         case 0x1:
@@ -141,6 +145,7 @@ int read_header(FILE *fichier) {
     }
 
     //Target architecture
+    printf("Target architecture:                            ");
     test = read(2, endian);
     switch (test) {
         case 0x00:
@@ -176,33 +181,34 @@ int read_header(FILE *fichier) {
     }
 
     //Version
+    printf("Version:                                        ");
     test = read(4, endian);
     if (test == 1) printf("Original version of ELF\n");
     else printf("Not original version of ELF\n");
 
     //Memory address of the entry point
     test = (read((nbbit / 8), endian));
-    printf("Memory address of the entry point : 0x%04X\n", test);
+    printf("Memory address of the entry point :             0x%04X\n", test);
 
     //offset header
     test = (read((nbbit / 8), endian));
-    printf("Start of the program header table : %d\n", test);
+    printf("Start of the program header table :             %d\n", test);
 
     //offset  section table
     test = (read((nbbit / 8), endian));
-    printf("Start of the section header table : %d\n", test);
+    printf("Start of the section header table :             %d\n", test);
 
-   //flags
+    //flags
     test = read(4, endian);
-    printf("Flags : 0x%04X\n", test);
+    printf("Flags :                                         0x%04X\n", test);
 
     //header size
     test = read(2, endian);
-    printf("Size of the header : %d\n", test);
+    printf("Size of the header :                            %d\n", test);
 
     //size of the program header section
     test = read(2, endian);
-    printf("Size of a program header table entry : %d\n", test);
+    printf("Size of a program header table entry :          %d\n", test);
 
     //number of entries in the program header section
     test = read(2, endian);
@@ -210,7 +216,7 @@ int read_header(FILE *fichier) {
 
     // size of a section
     test = read(2, endian);
-    printf("Size of a section header table entry : %d\n", test);
+    printf("Size of a section header table entry :          %d\n", test);
 
     //number of entries in the section header table
     test = read(2, endian);
@@ -218,7 +224,7 @@ int read_header(FILE *fichier) {
 
     //index of the section header table entry
     test = read(2, endian);
-    printf("Index of the section header table entry : %d\n", test);
+    printf("Index of the section header table entry :       %d\n", test);
 
     return 0;
 }
