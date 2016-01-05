@@ -5,13 +5,13 @@
 
 
 /*
- contient le main du projet avec la recherche du fichier passer en parametre
+ Contains the project's main function, with file passed as a parameter
  */
 int main();
 
 
 /*
- permet de quitter le programme tout en specifiant si il y a un probleme
+ Allows to quit the program, specifying if a problem occurs
  */
 
 void ferme();
