@@ -77,6 +77,7 @@ int main(){
 		x = bitread(bfichier);
 		test = test | (x << (15-i));
 	}
+	
 	switch (test){
 	case 0x1:
 		printf("Relocatable\n");
