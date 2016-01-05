@@ -58,8 +58,11 @@ int main(int argc, char *argv[]) {
             x = bitread(bfichier); //We read byte after byte
             test = test | (x << (7 - i)); //We concatenate the bytes to get an integer
         }
-        if (test == 1) printf("Original version of ELF\n");
-        else printf("Not original version of ELF\n");
+        if (test == 1) {
+            printf("Original version of ELF\n");
+        } else {
+            printf("Not original version of ELF\n");
+        }
         test = 0;
 
         for (i = 0; i < 8; i++) {
