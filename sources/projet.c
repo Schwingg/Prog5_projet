@@ -3,8 +3,6 @@
 #include "projet.h"
 #include "stdlib.h"
 
-FILE *fichier = NULL;
-
 void ferme() {
     fclose(fichier);
 }
