@@ -11,6 +11,7 @@ int main();
 
 
 /*
- contient la fonction permettant de faire la lecture du header
+ permet de quitter le programme tout en specifiant si il y a un probleme
  */
-void read_header(BFILE* bfichier);
+
+void ferme(int error);
