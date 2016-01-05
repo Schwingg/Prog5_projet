@@ -9,9 +9,9 @@ void read_header(BFILE* bfichier) {
 
     for (i = 0; i < 32; i++) {
         x = bitread(bfichier);
-    } //We jump the magic numbers (4 octets)
+    } //Skip the magic numbers (4 bytes)
 
-    //on lit les bits indiquant la taille de l'addressage
+    //Read the bits indicating the addressing size
     for (i = 0; i < 8; i++) {
         x = bitread(bfichier);
         test = test | (x << (7 - i));
@@ -28,7 +28,7 @@ void read_header(BFILE* bfichier) {
             break;
     }
     test = 0;
-    //lecture des bits little ou big endian
+    //Little or Big Endian reading and test
     for (i = 0; i < 8; i++) {
         x = bitread(bfichier);
         test = test | (x << (7 - i));
@@ -47,9 +47,9 @@ void read_header(BFILE* bfichier) {
     }
     test = 0;
 
-    for (i = 0; i < 8; i++) { //We read 1 octet
-        x = bitread(bfichier); //We read byte after byte
-        test = test | (x << (7 - i)); //We concatenate the bytes to get an integer
+    for (i = 0; i < 8; i++) { //We read 1 byte
+        x = bitread(bfichier); //We read bit after bit
+        test = test | (x << (7 - i)); //We concatenate the bits to get an integer
     }
     if (test == 1) {
         printf("Original version of ELF\n");
@@ -58,6 +58,7 @@ void read_header(BFILE* bfichier) {
     }
     test = 0;
 
+	// OS Type
     for (i = 0; i < 8; i++) {
         x = bitread(bfichier);
         test = test | (x << (7 - i));
@@ -96,6 +97,7 @@ void read_header(BFILE* bfichier) {
     }
     test = 0;
 
+	//Application Binary Interface Version
     for (i = 0; i < 8; i++) {
         x = bitread(bfichier);
         test = test | (x << (7 - i));
@@ -103,11 +105,12 @@ void read_header(BFILE* bfichier) {
     printf("ABI Version : %d\n", test);
     test = 0;
 
-    for (i = 0; i < 56; i++) { //We jump 7 octets
+    for (i = 0; i < 56; i++) { //Jump 7 bytes
         x = bitread(bfichier);
     }
 
-    for (i = 0; i < 16; i++) { //We read 2 octets
+	//Type of ELF file
+    for (i = 0; i < 16; i++) { //Read 2 bytes
         x = bitread(bfichier);
         test = test | (x << (15 - i));
     }
@@ -128,6 +131,7 @@ void read_header(BFILE* bfichier) {
     }
     test = 0;
 
+	//Target architecture
     for (i = 0; i < 16; i++) {
         x = bitread(bfichier);
         test = test | (x << (15 - i));
@@ -166,7 +170,8 @@ void read_header(BFILE* bfichier) {
     }
     test = 0;
 
-    for (i = 0; i < 32; i++) { //We read 4 octets
+	//Version
+    for (i = 0; i < 32; i++) { //Read 4 octets
         x = bitread(bfichier);
         test = test | (x << (31 - i));
     }
@@ -174,13 +179,15 @@ void read_header(BFILE* bfichier) {
     else printf("Not original version of ELF\n");
     test = 0;
 
+	//Memory address of the entry point
     for (i = 0; i < 32; i++) {
         x = bitread(bfichier);
         test = test | (x << (31 - i));
     }
-    printf("Memory adress of the entry point : 0x%04X\n", test);
+    printf("Memory address of the entry point : 0x%04X\n", test);
     test = 0;
 
+	//
     for (i = 0; i < 32; i++) {
         x = bitread(bfichier);
         test = test | (x << (31 - i));
