@@ -70,6 +70,7 @@ HEADER *read_header(FILE *fichier) {
             nbbit = 64;
             break;
     }
+    hed->EI_CLASS = nbbit;
     //Little or Big Endian reading and test
     printf("Data:                                           ");
     test = read(1, endian);
@@ -86,6 +87,7 @@ HEADER *read_header(FILE *fichier) {
             endian = 0;
             break;
     }
+    hed->EI_DATA = endian;
     printf("Version:                                        ");
     test = read(1, endian);
     printf("%d\n", test);
@@ -196,14 +198,17 @@ HEADER *read_header(FILE *fichier) {
     //Memory address of the entry point
     test = (read((nbbit / 8), endian));
     printf("Memory address of the entry point :             0x%04X\n", test);
+    hed->e_entry = test;
 
     //offset header
     test = (read((nbbit / 8), endian));
     printf("Start of the program header table :             %d\n", test);
+    hed->e_phoff = test;
 
     //offset  section table
     test = (read((nbbit / 8), endian));
     printf("Start of the section header table :             %d\n", test);
+    hed->e_shoff = test;
 
     //flags
     test = read(4, endian);
@@ -212,26 +217,32 @@ HEADER *read_header(FILE *fichier) {
     //header size
     test = read(2, endian);
     printf("Size of the header :                            %d\n", test);
+    hed->e_ehsize = test;
 
     //size of the program header section
     test = read(2, endian);
     printf("Size of a program header table entry :          %d\n", test);
+    hed->e_phentsize = test;
 
     //number of entries in the program header section
     test = read(2, endian);
     printf("Number of entries in the program header table : %d\n", test);
+    hed->e_phnum = test;
 
     // size of a section
     test = read(2, endian);
     printf("Size of a section header table entry :          %d\n", test);
+    hed->e_shentsize = test;
 
     //number of entries in the section header table
     test = read(2, endian);
     printf("Number of entries in the section header table : %d\n", test);
+    hed->e_shnum = test;
 
     //index of the section header table entry
     test = read(2, endian);
     printf("Index of the section header table entry :       %d\n", test);
+    hed->e_shstrndx = test;
 
     return hed;
 }
