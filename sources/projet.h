@@ -15,6 +15,6 @@ int main(int argc, char *argv[]);
 void ferme();
 
 /*
- desalloc the structures used
+ Frees the structures used
  */
 void desalloc();
