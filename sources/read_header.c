@@ -1,4 +1,3 @@
-#include "bfile.h"
 #include "stdio.h"
 
 FILE *fichier;
