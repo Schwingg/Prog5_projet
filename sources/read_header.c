@@ -3,13 +3,27 @@
 
 BFILE* bfichier;
 
-void read_header(BFILE* bfichier) {
-    int i, x, nbbit, endian;
-    unsigned int test = 0;
+int read_header(BFILE* bfichier) {
+    int i, j, x, nbbit, endian;
+    int test = 0;
 
-    for (i = 0; i < 32; i++) {
+    for (i = 0; i < 8; i++) {
         x = bitread(bfichier);
-    } //Skip the magic numbers (4 bytes)
+    } //Skip the magic numbers (0x7F)
+
+    char elf[3] = {'E', 'L', 'F'};
+    for (i = 0; i < 3; i++) {
+        for (j = 0; j < 8; j++) {
+            x = bitread(bfichier);
+            test = test | (x << (7 - j));
+        }
+        if (test != elf[i]) {
+            printf("Ce nest pas un fichier ELF\n");
+            return 1;
+        }
+        test = 0;
+    }
+    test = 0;
 
     //Read the bits indicating the addressing size
     for (i = 0; i < 8; i++) {
@@ -293,4 +307,5 @@ void read_header(BFILE* bfichier) {
         }
     }
     printf("Index of the section header table entry : %d\n", test);
+    return 0;
 }
