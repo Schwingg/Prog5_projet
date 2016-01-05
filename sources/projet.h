@@ -1,4 +1,6 @@
 
+FILE *fichier = NULL;
+
 /*
  Contains the project's main function, with file passed as a parameter
  */
