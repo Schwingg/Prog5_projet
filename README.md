@@ -7,4 +7,3 @@ est centŕe sur la dernière phase, dite de réimplantation, ex́ecut́ee par l
 en  ́etapes, avec la programmation de plusieurs outils interm ́ediaires, permettant de mieux comprendre les
 principales notions et de simplifier le d ́ecoupage des tˆaches.
 
-Alexandre : Je serais là pour environ 9h demain.
