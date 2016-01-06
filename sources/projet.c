@@ -37,12 +37,14 @@ int main(int argc, char *argv[]) {
             printf("impossible de lire le fichier\n");
             return 1;
         }
+        //PART 1
         hed = read_header(fichier); // No error during header reading
         if (hed->ELF == 1 && hed->EI_DATA == 0 && hed->EI_CLASS == 32) {
             ferme();
+            //PART 2
             //Starting the reading of the section header
             fichier = fopen(argv[1], "r");
-            //allocation du header de section
+            //Section header allocation
             sections = (SEC_HEADER **) malloc(hed->e_shnum * (sizeof (SEC_HEADER)));
             if (sections == NULL)
                 return 1;
@@ -54,12 +56,16 @@ int main(int argc, char *argv[]) {
             }
             sections = section_header(fichier, hed);
             ferme();
-            //lecture du contenu des sections
+            //PART 3
+            //Sections content reading
             fichier = fopen(argv[1], "r");
             if (read_section(fichier, sections, hed) == 1) {
                 printf("Erreur lors de lallocation du pointeur");
                 return 1;
             }
+            
+            //PART 4
+            //Symbols reading
             int j, x;
             for (i = 0; i < hed->e_shnum; i++) {
                 if (strcmp(sections[i]->sh_name, ".symtab") == 0) {
@@ -73,6 +79,7 @@ int main(int argc, char *argv[]) {
             ferme();
             desalloc();
             return 0;
+            
         } else {// Header reading returned an error
             ferme();
             free(hed);
