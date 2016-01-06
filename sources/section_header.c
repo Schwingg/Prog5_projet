@@ -7,10 +7,6 @@
 #include "section_header.h"
 
 SEC_HEADER **section_header(FILE* fichier, HEADER* hed) {
-    //hed->e_shoff;
-    //hed->e_shentsize;
-    //hed->e_shstrndx;
-    //hed->e_shnum;
     unsigned int pos = 0;
     int i = 0;
     
@@ -43,7 +39,7 @@ SEC_HEADER **section_header(FILE* fichier, HEADER* hed) {
         sections[i]->sh_name = (char*) malloc(sizeof (char)*256);
 
         fread(&idxName, sizeof (int), 1, fichier);
-        idxName = htobe32(idxName); // FIXME : check for ARM
+        idxName = htobe32(idxName);
         if (idxName == 0) {
             if (i == 0)
                 sections[i]->sh_name = "";
@@ -74,7 +70,7 @@ SEC_HEADER **section_header(FILE* fichier, HEADER* hed) {
         fread(&sections[i]->sh_entsize, sizeof (int), 1, fichier);
     }
 
-    // Display the informations
+    //Display the informations
     for (i = 0; i < hed->e_shnum; i++) {
         printf("Type : %s\n", sections[i]->sh_name);
         printf("Flags : 0x%x\n", htobe32(sections[i]->sh_flags));
