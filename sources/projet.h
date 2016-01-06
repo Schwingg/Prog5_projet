@@ -3,6 +3,8 @@ FILE *fichier = NULL;
 
 HEADER *hed;
 
+SEC_HEADER **sections;
+
 /*
  Contains the project's main function, with file passed as a parameter
  */
