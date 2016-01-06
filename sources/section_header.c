@@ -26,7 +26,7 @@ SEC_HEADER **section_header(FILE* fichier, HEADER* hed) {
     pos = htobe32(pos);
 
     //Display the Names table position
-    printf("Position de la table des noms : %x\n", pos);
+    printf("Position de la table des noms : 0x%04X\n", pos);
     fseek(fichier, hed->e_shoff, SEEK_SET);
 
     int idxName = 0;
@@ -71,15 +71,93 @@ SEC_HEADER **section_header(FILE* fichier, HEADER* hed) {
 
     //Display the informations
     for (i = 0; i < hed->e_shnum; i++) {
-        printf("Type : %s\n", sections[i]->sh_name);
-        printf("Flags : 0x%x\n", htobe32(sections[i]->sh_flags));
-        printf("Adress : 0x%x\n", htobe32(sections[i]->sh_addr));
-        printf("Offset : 0x%x\n", htobe32(sections[i]->sh_offset));
-        printf("Size : 0x%x\n", htobe32(sections[i]->sh_size));
-        printf("Link : 0x%x\n", htobe32(sections[i]->sh_link));
-        printf("Info : 0x%x\n", htobe32(sections[i]->sh_info));
-        printf("AddrAlign : 0x%x\n", htobe32(sections[i]->sh_addralign));
-        printf("EntSize : 0x%x\n", htobe32(sections[i]->sh_entsize));
+		printf("[%d]\n", i);
+		printf("Name :		%s\n", sections[i]->sh_name);
+		printf("Type :		");
+    	switch (sections[i]->sh_type >> 24) {
+        	case 0:
+        		printf("NULL\n");
+            	break;
+        	case 1:
+        		printf("PROGBITS\n");
+            	break;
+       		case 2:
+        		printf("SYMTAB\n");
+            	break;
+        	case 3:
+        		printf("STRTAB\n");
+            	break;
+        	case 4:
+        		printf("RELA\n");
+            	break;
+        	case 5:
+        		printf("HASH\n");
+            	break;
+        	case 6:
+        		printf("DYNAMIC\n");
+            	break;
+        	case 7:
+        		printf("NOTE\n");
+            	break;
+        	case 8:
+        		printf("NOBITS\n");
+            	break;
+        	case 9:
+        		printf("REL\n");
+            	break;
+        	case 10:
+        		printf("SHLIB\n");
+            	break;
+        	case 11:
+        		printf("DYNSYM\n");
+            	break;
+        	case 0x70000000:
+        		printf("LOPROC\n");
+            	break;
+        	case 0x7fffffff:
+        		printf("HIPROC\n");
+            	break;
+        	case 0x80000000:
+        		printf("LOUSER\n");
+            	break;
+        	case 0xffffffff:
+        		printf("HIUSER\n");
+            	break;
+    	}
+        printf("Adress :	0x%08X\n", htobe32(sections[i]->sh_addr));
+        printf("Offset :	0x%06X\n", htobe32(sections[i]->sh_offset));
+        printf("Size :		0x%06X\n", htobe32(sections[i]->sh_size));
+        printf("EntSize :	0x%02X\n", htobe32(sections[i]->sh_entsize));
+		printf("Flags :		");
+		switch (sections[i]->sh_flags >> 24) {
+			case 0:
+				printf("\n");
+				break;
+			case 1:
+				printf("W\n");
+				break;
+			case 2:
+				printf("A\n");
+				break;
+			case 3:
+				printf("WA\n");
+				break;
+			case 4:
+				printf("X\n");
+				break;
+			case 5:
+				printf("XW\n");
+				break;
+			case 6:
+				printf("XA\n");
+				break;
+			case 7:
+				printf("XWA\n");
+				break;
+		}
+		printf("Link :		%d\n", htobe32(sections[i]->sh_link));
+        printf("Info :		%d\n", htobe32(sections[i]->sh_info));
+        printf("AddrAlign :	%d\n", htobe32(sections[i]->sh_addralign));
         printf("------------------\n");
     }
 
