@@ -13,11 +13,11 @@ int read_section(FILE* fichier, SEC_HEADER **sections, HEADER *hed) {
     for (i = 0; i < hed->e_shnum; i++) {//for each section
         printf("Section %s\n", sections[i]->sh_name);
         fseek(fichier, htobe32(sections[i]->sh_offset), SEEK_SET);
-        printf("addr |      data");
-        printf("\n------------------------");
+        printf("addr |                data");
+        printf("\n------------------------------------------");
         for (j = htobe32(sections[i]->sh_offset); j < htobe32(sections[i]->sh_offset) + htobe32(sections[i]->sh_size); j = j + 4) {
             //Return to line
-            if (k % 2 == 0) {
+            if (k %4  == 0) {
                 printf("\n%04x | ", j);
             }
             k++;
@@ -27,7 +27,7 @@ int read_section(FILE* fichier, SEC_HEADER **sections, HEADER *hed) {
             hex = 0;
         }
         k = 0;
-        printf("\n------------------------\n");
+        printf("\n------------------------------------------\n");
         printf("addr |      data");
         printf("\n\n");
     }
