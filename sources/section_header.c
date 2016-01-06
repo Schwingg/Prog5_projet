@@ -74,7 +74,7 @@ SEC_HEADER **section_header(FILE* fichier, HEADER* hed) {
         printf("[%d]\n", i);
         printf("Name :		%s\n", sections[i]->sh_name);
         printf("Type :		");
-        switch (sections[i]->sh_type >> 24) {
+        switch (htobe32(sections[i]->sh_type)) {
             case 0:
                 printf("NULL\n");
                 break;
@@ -131,7 +131,7 @@ SEC_HEADER **section_header(FILE* fichier, HEADER* hed) {
         printf("Size :		0x%06X\n", htobe32(sections[i]->sh_size));
         printf("EntSize :	0x%02X\n", htobe32(sections[i]->sh_entsize));
         printf("Flags :		");
-        switch (sections[i]->sh_flags >> 24) {
+        switch (htobe32(sections[i]->sh_flags)) {
             case 0:
                 printf("\n");
                 break;
