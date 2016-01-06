@@ -1,7 +1,9 @@
 #include <stdio.h>
+#include <string.h>
 #include "read_header.h"
 #include <stdlib.h>
 #include "section_header.h"
+#include "symbolheader.h"
 #include "projet.h"
 #include "read_section.h"
 
@@ -20,6 +22,7 @@ void desalloc() {
     }
     free(sections);
     free(hed);
+    free(symb);
 }
 
 int main(int argc, char *argv[]) {
@@ -57,6 +60,16 @@ int main(int argc, char *argv[]) {
                 printf("Erreur lors de lallocation du pointeur");
                 return 1;
             }
+            int j, x;
+            for (i = 0; i < hed->e_shnum; i++) {
+                if (strcmp(sections[i]->sh_name, ".symtab") == 0) {
+                    j = 1;
+                }
+                if (strcmp(sections[i]->sh_name, ".strtab") == 0) {
+                    x = 1;
+                }
+            }
+            symb = symbole_header(fichier, sections[j], sections[x]);
             ferme();
             desalloc();
             return 0;
