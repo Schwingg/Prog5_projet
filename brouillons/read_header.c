@@ -1,213 +1,237 @@
-#include "bfile.h"
 #include <stdio.h>
+#include "read_header.h"
+#include <stdlib.h>
 
-FILE* fichier;
-BFILE* bfichier;
+// Reads octet bytes, taking in account the Endianness
 
-int main(){
-	fichier = fopen("matrice.o","r");
-	bfichier = bstart(fichier,"r");
+int read(int octet, int endian) {
+    int i, estlu = 0, temp = 0;
+    if (endian == 0) {
+        for (i = 0; i < octet; i++) {
+            fread(&temp, sizeof (char), 1, fichier);
+            estlu = estlu | temp << 8 * (octet - 1 - i);
 
-	int i,x;
-	int test=0;
+        }
+    } else {
+        for (i = 0; i < octet; i++) {
+            fread(&temp, sizeof (char), 1, fichier);
+            estlu = estlu | temp << 8 * i;
+        }
+    }
+    return estlu;
+}
 
-	for (i=0; i<48; i++){x = bitread(bfichier);} //We jump the magic numbers and the octets for 32/64 bits and the endian (6 octets)
+// Reads the header of the file *fichier
 
-	printf("32 bits\n"); //We only work with the ELF32 format
-	printf("Big Endian\n"); // We only work in Big Endian
+HEADER *read_header(FILE *fichier) {
+    int i, nbbit, endian = 0;
+    int test;
+    HEADER *hed;
+    hed = (HEADER *) malloc(sizeof (HEADER));
+    if (hed == NULL)
+        return NULL;
+    fseek(fichier, 1, SEEK_CUR);
 
-	for (i=0; i<8; i++){ //We read 1 octet
-		x = bitread(bfichier); //We read byte after byte
-		test = test | (x << (7-i)); //We concatenate the bytes to get an integer
-	}
-	if (test == 1) printf("Original version of ELF\n");
-	else printf("Not original version of ELF\n");
-	test = 0;
+    char elf[3] = {'E', 'L', 'F'};
+    for (i = 0; i < 3; i++) {
+        test = read(1, endian);
+        if (test != elf[i]) {
+            printf("This is not an ELF file\n");
+            hed->ELF = 0;
+            return hed;
+        }
+    }
+    hed->ELF = 1;
+    printf("Class                                           ELF");
 
-	for (i=0; i<8; i++){
-		x = bitread(bfichier);
-		test = test | (x << (7-i));
-	}
-	switch (test){
-	case 0x0:
-		printf("System V\n");
-		break;
-	case 0x1:
-		printf("HP-UX\n");
-		break;
-	case 0x2:
-		printf("NetBSD\n");
-		break;
-	case 0x3:
-		printf("Linux\n");
-		break;
-	case 0x6:
-		printf("Solaris\n");
-		break;
-	case 0x7:
-		printf("AIX\n");
-		break;
-	case 0x8:
-		printf("IRIX\n");
-		break;
-	case 0x9:
-		printf("FreeBSD\n");
-		break;
-	case 0xC:
-		printf("OpenBSD\n");
-		break;
-	case 0xD:
-		printf("OpenVMS\n");
-		break;
-	}
-	test = 0;
+    //Read the bits indicating the addressing size
+    test = read(1, endian);
+    switch (test) {
+        case 0x0:
+            printf("/n No indication about address size?\n");
+            break;
+        case 0x1:
+            printf("32/bits\n");
+            nbbit = 32;
+            break;
+        case 0x2:
+            printf("64/bits\n");
+            nbbit = 64;
+            break;
+    }
+    hed->EI_CLASS = nbbit;
+    //Little or Big Endian reading and test
+    printf("Data:                                           ");
+    test = read(1, endian);
+    switch (test) {
+        case 0x0:
+            printf("No indication about endianness\n");
+            break;
+        case 0x1:
+            printf("Little Endian\n");
+            endian = 1;
+            break;
+        case 0x2:
+            printf("Big Endian\n");
+            endian = 0;
+            break;
+    }
+    hed->EI_DATA = endian;
+    printf("Version:                                        ");
+    test = read(1, endian);
+    printf("%d\n", test);
+    test = 0;
 
-	for (i=0; i<8; i++){
-		x = bitread(bfichier);
-		test = test | (x << (7-i));
-	}
-	printf("ABI Version : %d\n",test);
-	test = 0;
+    // OS Type
+    printf("OS type:                                        ");
+    test = read(1, endian);
+    switch (test) {
+        case 0x0:
+            printf("System V\n");
+            break;
+        case 0x1:
+            printf("HP-UX\n");
+            break;
+        case 0x2:
+            printf("NetBSD\n");
+            break;
+        case 0x3:
+            printf("Linux\n");
+            break;
+        case 0x6:
+            printf("Solaris\n");
+            break;
+        case 0x7:
+            printf("AIX\n");
+            break;
+        case 0x8:
+            printf("IRIX\n");
+            break;
+        case 0x9:
+            printf("FreeBSD\n");
+            break;
+        case 0xC:
+            printf("OpenBSD\n");
+            break;
+        case 0xD:
+            printf("OpenVMS\n");
+            break;
+    }
 
-	for (i=0; i<56; i++){ //We jump 7 octets
-		x = bitread(bfichier);
-	}
+    //Application Binary Interface Version
+    test = read(1, endian);
+    printf("ABI Version :                                   %d\n", test);
 
-	for (i=0; i<16; i++){ //We read 2 octets
-		x = bitread(bfichier);
-		test = test | (x << (15-i));
-	}
-	
-	switch (test){
-	case 0x1:
-		printf("Relocatable\n");
-		break;
-	case 0x2:
-		printf("Executable\n");
-		break;
-	case 0x3:
-		printf("Shared\n");
-		break;
-	case 0x4:
-		printf("Core\n");
-		break;
-	}
-	test = 0;
+    fseek(fichier, 7, SEEK_CUR);
 
-	for (i=0; i<16; i++){
-		x = bitread(bfichier);
-		test = test | (x << (15-i));
-	}
-	switch (test){
-	case 0x00:
-		printf("No specific instruction set\n");
-		break;
-	case 0x02:
-		printf("SPARC\n");
-		break;
-	case 0x03:
-		printf("x86\n");
-		break;
-	case 0x08:
-		printf("MIPS\n");
-		break;
-	case 0x14:
-		printf("PowerPC\n");
-		break;
-	case 0x28:
-		printf("ARM\n");
-		break;
-	case 0x2A:
-		printf("SuperH\n");
-		break;
-	case 0x32:
-		printf("IA-64\n");
-		break;
-	case 0x3E:
-		printf("x86-64\n");
-		break;
-	case 0xB7:
-		printf("AArch64\n");
-		break;
-	}
-	test = 0;
+    //Type of ELF file
+    printf("Type:                                           ");
+    test = read(2, endian);
+    switch (test) {
+        case 0x1:
+            printf("Relocatable\n");
+            break;
+        case 0x2:
+            printf("Executable\n");
+            break;
+        case 0x3:
+            printf("Shared\n");
+            break;
+        case 0x4:
+            printf("Core\n");
+            break;
+    }
 
-	for (i=0; i<32; i++){ //We read 4 octets
-		x = bitread(bfichier);
-		test = test | (x << (31-i));
-	}
-	if (test == 1) printf("Original version of ELF\n");
-	else printf("Not original version of ELF\n");
-	test = 0;
+    //Target architecture
+    printf("Target architecture:                            ");
+    test = read(2, endian);
+    switch (test) {
+        case 0x00:
+            printf("No specific instruction set\n");
+            break;
+        case 0x02:
+            printf("SPARC\n");
+            break;
+        case 0x03:
+            printf("x86\n");
+            break;
+        case 0x08:
+            printf("MIPS\n");
+            break;
+        case 0x14:
+            printf("PowerPC\n");
+            break;
+        case 0x28:
+            printf("ARM\n");
+            break;
+        case 0x2A:
+            printf("SuperH\n");
+            break;
+        case 0x32:
+            printf("IA-64\n");
+            break;
+        case 0x3E:
+            printf("x86-64\n");
+            break;
+        case 0xB7:
+            printf("AArch64\n");
+            break;
+    }
 
-	for (i=0; i<32; i++){
-		x = bitread(bfichier);
-		test = test | (x << (31-i));
-	}
-	printf("Memory adress of the entry point : 0x%04X\n", test);
-	test = 0;
+    //Version
+    printf("Version:                                        ");
+    test = read(4, endian);
+    if (test == 1) printf("Original version of ELF\n");
+    else printf("Not original version of ELF\n");
 
-	for (i=0; i<32; i++){
-		x = bitread(bfichier);
-		test = test | (x << (31-i));
-	}
-	printf("Start of the program header table : %d\n", test);
-	test = 0;
+    //Memory address of the entry point
+    test = (read((nbbit / 8), endian));
+    printf("Memory address of the entry point :             0x%04X\n", test);
+    hed->e_entry = test;
 
-	for (i=0; i<32; i++){
-		x = bitread(bfichier);
-		test = test | (x << (31-i));
-	}
-	printf("Start of the section header table : %d\n", test);
-	test = 0;
+    //offset header
+    test = (read((nbbit / 8), endian));
+    printf("Start of the program header table :             %d\n", test);
+    hed->e_phoff = test;
 
-	for (i=0; i<32; i++){
-		x = bitread(bfichier);
-		test = test | (x << (31-i));
-	}
-	printf("Flags : 0x%04X\n", test);
-	test = 0;
+    //offset  section table
+    test = (read((nbbit / 8), endian));
+    printf("Start of the section header table :             %d\n", test);
+    hed->e_shoff = test;
 
-	for (i=0; i<16; i++){
-		x = bitread(bfichier);
-		test = test | (x << (15-i));
-	}
-	printf("Size of the header : %d\n", test);
-	test = 0;
+    //flags
+    test = read(4, endian);
+    printf("Flags :                                         0x%04X\n", test);
 
-	for (i=0; i<16; i++){
-		x = bitread(bfichier);
-		test = test | (x << (15-i));
-	}
-	printf("Size of a program header table entry : %d\n", test);
-	test = 0;
+    //header size
+    test = read(2, endian);
+    printf("Size of the header :                            %d\n", test);
+    hed->e_ehsize = test;
 
-	for (i=0; i<16; i++){
-		x = bitread(bfichier);
-		test = test | (x << (15-i));
-	}
-	printf("Number of entries in the program header table : %d\n", test);
-	test = 0;
+    //size of the program header section
+    test = read(2, endian);
+    printf("Size of a program header table entry :          %d\n", test);
+    hed->e_phentsize = test;
 
-	for (i=0; i<16; i++){
-		x = bitread(bfichier);
-		test = test | (x << (15-i));
-	}
-	printf("Size of a section header table entry : %d\n", test);
-	test = 0;
+    //number of entries in the program header section
+    test = read(2, endian);
+    printf("Number of entries in the program header table : %d\n", test);
+    hed->e_phnum = test;
 
-	for (i=0; i<16; i++){
-		x = bitread(bfichier);
-		test = test | (x << (15-i));
-	}
-	printf("Number of entries in the section header table : %d\n", test);
-	test = 0;
+    // size of a section
+    test = read(2, endian);
+    printf("Size of a section header table entry :          %d\n", test);
+    hed->e_shentsize = test;
 
-	for (i=0; i<16; i++){
-		x = bitread(bfichier);
-		test = test | (x << (15-i));
-	}
-	printf("Index of the section header table entry : %d\n", test);
+    //number of entries in the section header table
+    test = read(2, endian);
+    printf("Number of entries in the section header table : %d\n", test);
+    hed->e_shnum = test;
 
-	return 0;
+    //index of the section header table entry
+    test = read(2, endian);
+    printf("Index of the section header table entry :       %d\n\n", test);
+    hed->e_shstrndx = test;
+
+    return hed;
 }

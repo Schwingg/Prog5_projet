@@ -61,6 +61,7 @@ int main(int argc, char *argv[]) {
             if (read_section(fichier, sections, hed) == 1) {
                 printf("Erreur lors de lallocation du pointeur");
                 return 1;
+	   }
 
                     
             int j,x;
