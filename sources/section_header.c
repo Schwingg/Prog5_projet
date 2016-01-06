@@ -92,5 +92,5 @@ SEC_HEADER **section_header(FILE* fichier, HEADER* hed) {
     }
 
 
-    return 0;
+    return sections;
 }
