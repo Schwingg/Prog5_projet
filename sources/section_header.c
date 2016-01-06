@@ -14,13 +14,12 @@ SEC_HEADER **section_header(FILE* fichier, HEADER* hed) {
     SEC_HEADER **sections = (SEC_HEADER **) malloc(hed->e_shnum * (sizeof (SEC_HEADER)));
     if (sections == NULL)
         return NULL;
-
-    //Allocation of the sections's header parts
     for (i = 0; i < hed->e_shnum; i++) {
         sections[i] = (SEC_HEADER*) malloc(sizeof (SEC_HEADER));
         if (sections[i] == NULL)
             return NULL;
     }
+    //end of allocation of sections
 
     fseek(fichier, (hed->e_shstrndx * hed->e_shentsize) + hed->e_shoff + 16, SEEK_SET); // 5 * 4 - 3 bytes
     fread(&pos, sizeof (int), 1, fichier);
