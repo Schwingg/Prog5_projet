@@ -7,37 +7,37 @@
 #include "section_header.h"
 
 SEC_HEADER **section_header(FILE* fichier, HEADER* hed) {
-    //(unsigned int)hed->e_shoff;
-    //(unsigned int)hed->e_shentsize;
-    //(unsigned int)hed->e_shstrndx;
-    //(unsigned int)hed->e_shnum;
+    //hed->e_shoff;
+    //hed->e_shentsize;
+    //hed->e_shstrndx;
+    //hed->e_shnum;
     unsigned int pos = 0;
     int i = 0;
     
     //Allocation of the sections header
-    SEC_HEADER **sections = (SEC_HEADER **) malloc((unsigned int)hed->e_shnum * (sizeof (SEC_HEADER)));
+    SEC_HEADER **sections = (SEC_HEADER **) malloc(hed->e_shnum * (sizeof (SEC_HEADER)));
     if (sections == NULL)
         return NULL;
 
     //Allocation of the sections's header parts
-    for (i = 0; i < (unsigned int)hed->e_shnum; i++) {
+    for (i = 0; i < hed->e_shnum; i++) {
         sections[i] = (SEC_HEADER*) malloc(sizeof (SEC_HEADER));
         if (sections[i] == NULL)
             return NULL;
     }
 
-    fseek(fichier, ((unsigned int)hed->e_shstrndx * (unsigned int)hed->e_shentsize) + (unsigned int)hed->e_shoff + 16, SEEK_SET); // 5 * 4 - 3 bytes
+    fseek(fichier, (hed->e_shstrndx * hed->e_shentsize) + hed->e_shoff + 16, SEEK_SET); // 5 * 4 - 3 bytes
     fread(&pos, sizeof (int), 1, fichier);
     pos = htobe32(pos);
 
     //Display the Names table position
     printf("Position de la table des noms : %x\n", pos);
-    fseek(fichier, (unsigned int)hed->e_shoff, SEEK_SET);
+    fseek(fichier, hed->e_shoff, SEEK_SET);
 
     int idxName = 0;
 
     //for each section
-    for (i = 0; i < (unsigned int)hed->e_shnum; i++) {
+    for (i = 0; i < hed->e_shnum; i++) {
         idxName = 0;
         //store the name in sh_name
         sections[i]->sh_name = (char*) malloc(sizeof (char)*256);
@@ -59,7 +59,7 @@ SEC_HEADER **section_header(FILE* fichier, HEADER* hed) {
                     sections[i]->sh_name[j] = '\0';
                 j++;
             }
-            fseek(fichier, (unsigned int)hed->e_shoff + (40 * i) + 4, SEEK_SET);
+            fseek(fichier, hed->e_shoff + (40 * i) + 4, SEEK_SET);
         }
         
         //Store the rest of the information for this section
@@ -75,7 +75,7 @@ SEC_HEADER **section_header(FILE* fichier, HEADER* hed) {
     }
 
     // Display the informations
-    for (i = 0; i < (unsigned int)hed->e_shnum; i++) {
+    for (i = 0; i < hed->e_shnum; i++) {
         printf("Type : %s\n", sections[i]->sh_name);
         printf("Flags : 0x%x\n", htobe32(sections[i]->sh_flags));
         printf("Adress : 0x%x\n", htobe32(sections[i]->sh_addr));
