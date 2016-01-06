@@ -14,7 +14,7 @@ typedef struct {
     int e_shstrndx;
 } HEADER;
 
-FILE *fichier;
+FILE* fichier;
 
 
 /*
