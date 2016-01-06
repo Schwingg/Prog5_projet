@@ -5,17 +5,16 @@
 #include "symbolheader.h"
 
 
-/*Paramètres: - symb_tab - structure de la section de la table de symbole(.symtab)
- 							- str_tab - structure de la section de .strtab
+/*Paramètres: - symb_tab - .symtab section structure
+ 							- str_tab - .strtab section structure
  */							
 SYMB_HEADER **symbole_header(FILE* fichier, SEC_HEADER* symb_tab, SEC_HEADER* str_tab){
 		unsigned long SYMB_HEAD_IDX = htobe32(symb_tab->sh_offset);
     unsigned long SYMB_SIZE = htobe32(symb_tab->sh_size);
     unsigned long STR_HEAD_IDX = htobe32(str_tab->sh_offset);
-    //unsigned long STR_SIZE = str_tab->sh_size;
     int i = 0;
     int idxName;
-    int LONGUEUR_SYMB = 16;// 16 = taille en octet d'une ligne de la table de symbole
+    int LONGUEUR_SYMB = 16;// 16 = size of a line in the symbols tab (bytes)
     int nbr_symb = SYMB_SIZE / LONGUEUR_SYMB;
     
     //Allocation
@@ -65,6 +64,8 @@ SYMB_HEADER **symbole_header(FILE* fichier, SEC_HEADER* symb_tab, SEC_HEADER* st
 				
     }
     
+    
+    //display
     for (i=0;i < nbr_symb ;i++){
     	printf("Name :		%s\n", symbole[i]->st_name);
     	printf("Value :		%x\n", symbole[i]->st_value);
@@ -112,7 +113,7 @@ SYMB_HEADER **symbole_header(FILE* fichier, SEC_HEADER* symb_tab, SEC_HEADER* st
       			break;
       			}
 
-    	printf("Other :		DEFAULT\n");// valeur inutilisé : st_other
+    	printf("Other :		DEFAULT\n");// Unused value : st_other
     	printf("Ndx :		%d\n", symbole[i]->st_shndx);
     	printf("---------------------\n\n");
     	}
