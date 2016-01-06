@@ -2,6 +2,7 @@
 #include "read_header.h"
 #include "projet.h"
 #include "stdlib.h"
+#include "section_header.h"
 
 //Closes the file
 
