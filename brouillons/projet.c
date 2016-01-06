@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "section_header.h"
 #include "symbolheader.h"
+#include "read_section.h"
 #include "projet.h"
 #include <string.h>
 
@@ -41,7 +42,7 @@ int main(int argc, char *argv[]) {
         if (hed->ELF == 1 && hed->EI_DATA == 0 && hed->EI_CLASS == 32) {
             ferme();
             //Starting the reading of the section header
-            (fichier = fopen(argv[1], "r"));
+            fichier = fopen(argv[1], "r");
             //allocation du header de section
             sections = (SEC_HEADER **) malloc(hed->e_shnum * (sizeof (SEC_HEADER)));
             if (sections == NULL)
@@ -53,6 +54,14 @@ int main(int argc, char *argv[]) {
                     return 1;
             }
             sections = section_header(fichier, hed);
+
+	    ferme();
+            //lecture du contenu des sections
+            fichier = fopen(argv[1], "r");
+            if (read_section(fichier, sections, hed) == 1) {
+                printf("Erreur lors de lallocation du pointeur");
+                return 1;
+
                     
             int j,x;
             for(i = 0 ; i < hed->e_shnum;i++) {
