@@ -1,5 +1,7 @@
+FILE* fichier;
+
+HEADER* hed;
+
 SEC_HEADER **sections;
 
-HEADER *hed;
-
-void read_section();
+int read_section(FILE* fichier, SEC_HEADER **sections, HEADER *hed);
