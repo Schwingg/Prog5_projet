@@ -1,7 +1,7 @@
-#define SEC_HEAD_IDX 0x1b0 // TODO : Get value from ELF header           e_shoff
-#define SEC_SIZE 40 // TODO : Get value from ELF header              e_shentsize
-#define SEC_NAME_NO 12 // TODO : Get value from ELF header            e_shstrndx
-#define SEC_NBR 15 // TODO : Get value from ELF header                   e_shnum
+//#define SEC_HEAD_IDX 0x1b0 // TODO : Get value from ELF header           e_shoff
+//#define SEC_SIZE 40 // TODO : Get value from ELF header              e_shentsize
+//#define SEC_NAME_NO 12 // TODO : Get value from ELF header            e_shstrndx
+//#define SEC_NBR 15 // TODO : Get value from ELF header                   e_shnum
 
 // ! Attention ! Usage de "htobe32" pour les architectures 64 bits
 // en little endian, non testé pour la carte ARM en big endian 
@@ -11,13 +11,13 @@
 #include "read_header.h"
 #include "section_header.h"
 
-SEC_HEADER *section_header(FILE* fichier, HEADER* hed) {
-
-    //FILE* fichier;
-    fichier = fopen("example1.o", "r");
-
-
-    int pos = 0, i = 0;
+SEC_HEADER **section_header(FILE* fichier, HEADER* hed) {
+    unsigned long SEC_HEAD_IDX = hed->e_shoff;
+    unsigned long SEC_SIZE = hed->e_shentsize;
+    unsigned long SEC_NAME_NO = hed->e_shstrndx;
+    unsigned long SEC_NBR = hed->e_shnum;
+    unsigned int pos = 0;
+    int i = 0;
     SEC_HEADER **sections = (SEC_HEADER **) malloc(SEC_NBR * (sizeof (SEC_HEADER)));
     if (sections == NULL)
         return NULL;
@@ -28,10 +28,9 @@ SEC_HEADER *section_header(FILE* fichier, HEADER* hed) {
             return NULL;
     }
 
-    fseek(fichier, (SEC_NAME_NO * SEC_SIZE) + SEC_HEAD_IDX + 17, SEEK_SET); // 5 * 4 - 3 bytes
+    fseek(fichier, (SEC_NAME_NO * SEC_SIZE) + SEC_HEAD_IDX + 16, SEEK_SET); // 5 * 4 - 3 bytes
     fread(&pos, sizeof (int), 1, fichier);
     pos = htobe32(pos);
-    pos = 0x130; // FIXME : à rendre dynamique
 
     printf("Position de la table des noms : %x\n", pos);
     fseek(fichier, SEC_HEAD_IDX, SEEK_SET);
