@@ -69,10 +69,10 @@ int main(int argc, char *argv[]) {
             int j, x;
             for (i = 0; i < hed->e_shnum; i++) {
                 if (strcmp(sections[i]->sh_name, ".symtab") == 0) {
-                    j = 1;
+                    j = i;
                 }
                 if (strcmp(sections[i]->sh_name, ".strtab") == 0) {
-                    x = 1;
+                    x = i;
                 }
             }
             symb = symbole_header(fichier, sections[j], sections[x]);
