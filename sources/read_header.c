@@ -30,7 +30,7 @@ HEADER *read_header(FILE *fichier) {
     hed = (HEADER *) malloc(sizeof (HEADER));
     if (hed == NULL)
         return NULL;
-	fseek(fichier,1,SEEK_CUR); 
+    fseek(fichier, 1, SEEK_CUR);
 
     char elf[3] = {'E', 'L', 'F'};
     for (i = 0; i < 3; i++) {
@@ -122,7 +122,7 @@ HEADER *read_header(FILE *fichier) {
     test = read(1, endian);
     printf("ABI Version :                                   %d\n", test);
 
-	fseek(fichier,7,SEEK_CUR);
+    fseek(fichier, 7, SEEK_CUR);
 
     //Type of ELF file
     printf("Type:                                           ");
