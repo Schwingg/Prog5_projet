@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "section_header.h"
 #include "projet.h"
+#include "read_section.h"
 
 //Closes the file
 
@@ -11,6 +12,7 @@ void ferme() {
 }
 
 //frees the structures
+
 void desalloc() {
     int i;
     for (i = 1; i < hed->e_shnum; i++) {
@@ -48,6 +50,12 @@ int main(int argc, char *argv[]) {
                     return 1;
             }
             sections = section_header(fichier, hed);
+            ferme();
+            (fichier = fopen(argv[1], "r"));
+            if (read_section(fichier, sections, hed) == 1) {
+                printf("Erreur lors de lallocation du pointeur");
+                return 1;
+            }
             ferme();
             desalloc();
             return 0;
