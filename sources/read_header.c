@@ -1,6 +1,6 @@
-#include "stdio.h"
+#include <stdio.h>
 #include "read_header.h"
-#include "stdlib.h"
+#include <stdlib.h>
 
 // Skips octet bytes
 void jump(int octet) {
