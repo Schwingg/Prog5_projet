@@ -3,7 +3,7 @@ typedef struct {
     char * sh_name;
     int sh_type;
     int sh_flags;
-    int sh_addr;
+    unsigned int sh_addr;
     int sh_offset;
     int sh_size;
     int sh_link;

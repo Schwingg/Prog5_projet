@@ -10,8 +10,7 @@ void ferme() {
     fclose(fichier);
 }
 
-//frees the structure
-
+//frees the structures
 void desalloc() {
     int i;
     for (i = 1; i < hed->e_shnum; i++) {

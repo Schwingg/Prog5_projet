@@ -5,13 +5,13 @@ typedef struct {
     int EI_DATA;
     int e_entry;
     int e_phoff;
-    int e_shoff;
+    unsigned int e_shoff;
     int e_ehsize;
     int e_phentsize;
     int e_phnum;
-    int e_shentsize;
-    int e_shnum;
-    int e_shstrndx;
+    unsigned int e_shentsize;
+    unsigned int e_shnum;
+    unsigned int e_shstrndx;
 } HEADER;
 
 FILE* fichier;

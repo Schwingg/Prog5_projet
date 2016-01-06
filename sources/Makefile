@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -Werror
+CFLAGS=-ggdb3 -Wall -Werror
 
 FILES=$(shell ls *.c)
 
