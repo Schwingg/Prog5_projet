@@ -1,8 +1,8 @@
 #include "stdio.h"
 #include "read_header.h"
-#include "projet.h"
 #include "stdlib.h"
 #include "section_header.h"
+#include "projet.h"
 
 //Closes the file
 
@@ -13,11 +13,17 @@ void ferme() {
 //frees the structure
 
 void desalloc() {
+    //int i;
+    //for (i = 1; i < hed->e_shnum; i++) {
+    //    free(sections[i]);
+    //}
+    free(sections);
     free(hed);
 }
 
 int main(int argc, char *argv[]) {
     if (argc == 2) {
+        //allocation du header ELF
         hed = (HEADER *) malloc(sizeof (HEADER));
         if (hed == NULL)
             return 1;
@@ -32,11 +38,23 @@ int main(int argc, char *argv[]) {
             ferme();
             //Starting the reading of the section header
             (fichier = fopen(argv[1], "r"));
+            //allocation du header de section
+            SEC_HEADER **sections = (SEC_HEADER **) malloc(hed->e_shnum * (sizeof (SEC_HEADER)));
+            if (sections == NULL)
+                return 1;
+            int i;
+            for (i = 0; i < hed->e_shnum; i++) {
+                sections[i] = (SEC_HEADER*) malloc(sizeof (SEC_HEADER));
+                if (sections[i] == NULL)
+                    return 1;
+            }
+            sections = section_header(fichier, hed);
+            ferme();
             desalloc();
             return 0;
         } else {// Header reading returned an error
             ferme();
-            desalloc();
+            free(hed);
             return 1;
         }
     } else {// argv[1] is empty
