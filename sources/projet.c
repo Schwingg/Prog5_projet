@@ -13,10 +13,10 @@ void ferme() {
 //frees the structure
 
 void desalloc() {
-    //int i;
-    //for (i = 1; i < hed->e_shnum; i++) {
-    //    free(sections[i]);
-    //}
+    int i;
+    for (i = 1; i < hed->e_shnum; i++) {
+        free(sections[i]);
+    }
     free(sections);
     free(hed);
 }
@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
             //Starting the reading of the section header
             (fichier = fopen(argv[1], "r"));
             //allocation du header de section
-            SEC_HEADER **sections = (SEC_HEADER **) malloc(hed->e_shnum * (sizeof (SEC_HEADER)));
+            sections = (SEC_HEADER **) malloc(hed->e_shnum * (sizeof (SEC_HEADER)));
             if (sections == NULL)
                 return 1;
             int i;
