@@ -4,8 +4,8 @@ typedef struct {
     int sh_type;
     int sh_flags;
     unsigned int sh_addr;
-    int sh_offset;
-    int sh_size;
+    unsigned int sh_offset;
+    unsigned int sh_size;
     int sh_link;
     int sh_info;
     int sh_addralign;
