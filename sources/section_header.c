@@ -111,6 +111,8 @@ SEC_HEADER **section_header(FILE* fichier, HEADER* hed) {
             case 11:
                 printf("DYNSYM\n");
                 break;
+		}
+		switch (sections[i]->sh_type) {
             case 0x70000000:
                 printf("LOPROC\n");
                 break;
