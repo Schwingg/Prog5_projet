@@ -3,8 +3,6 @@ FILE *fichier = NULL;
 
 HEADER *hed;
 
-
-
 SEC_HEADER **sections;
 
 /*
