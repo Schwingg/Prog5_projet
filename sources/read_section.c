@@ -1,7 +1,3 @@
-#define SEC 1 // need a section to get info (number or name)
-#define SEC_OFF 0x44 // Offset of section SEC
-#define SEC_SIZE 0x16 // Size of section SEC
-
 #include <stdio.h>
 #include <stdlib.h>
 #include "read_header.h"
