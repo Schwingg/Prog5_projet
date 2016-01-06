@@ -21,4 +21,4 @@ HEADER* hed;
  * You must provide to the program a HEADER structure that
  * contain all the information of the ELF header.
  */
-SEC_HEADER *section_header(FILE *fichier, HEADER *hed);
+SEC_HEADER **section_header(FILE *fichier, HEADER *hed);
