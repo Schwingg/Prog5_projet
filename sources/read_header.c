@@ -2,14 +2,6 @@
 #include "read_header.h"
 #include <stdlib.h>
 
-// Skips octet bytes
-void jump(int octet) {
-    int temp = 0, i;
-    for (i = 0; i < octet; i++) {
-        fread(&temp, sizeof (char), 1, fichier);
-    }
-}
-
 // Reads octet bytes, taking in account the Endianness
 
 int read(int octet, int endian) {
@@ -38,7 +30,7 @@ HEADER *read_header(FILE *fichier) {
     hed = (HEADER *) malloc(sizeof (HEADER));
     if (hed == NULL)
         return NULL;
-    jump(1);
+	fseek(fichier,1,SEEK_CUR); 
 
     char elf[3] = {'E', 'L', 'F'};
     for (i = 0; i < 3; i++) {
@@ -130,7 +122,7 @@ HEADER *read_header(FILE *fichier) {
     test = read(1, endian);
     printf("ABI Version :                                   %d\n", test);
 
-    jump(7);
+	fseek(fichier,7,SEEK_CUR);
 
     //Type of ELF file
     printf("Type:                                           ");
@@ -238,7 +230,7 @@ HEADER *read_header(FILE *fichier) {
 
     //index of the section header table entry
     test = read(2, endian);
-    printf("Index of the section header table entry :       %d\n", test);
+    printf("Index of the section header table entry :       %d\n\n", test);
     hed->e_shstrndx = test;
 
     return hed;
