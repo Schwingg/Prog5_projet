@@ -6,6 +6,7 @@
 #include "symbolheader.h"
 #include "projet.h"
 #include "read_section.h"
+#include "rel.h"
 
 //Closes the file
 
@@ -76,6 +77,10 @@ int main(int argc, char *argv[]) {
                 }
             }
             symb = symbole_header(fichier, sections[j], sections[x]);
+
+						//
+						get_rel_sections(fichier, sections, hed->e_shnum);
+            
             ferme();
             desalloc();
             return 0;
