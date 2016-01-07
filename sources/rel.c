@@ -17,6 +17,8 @@ REL** get_rel_sections(FILE* fichier, SEC_HEADER** sections, int nbSecs)
 			if (rel_sections == NULL)
         return NULL;
         
+			printf("%s : \n",sections[i]->sh_name);
+			printf("Decalage|  Info  |   Symb  |  Type  \n");
 			for(j = 0; j < htobe32(sections[i]->sh_size); j += 8)
 			{
 				rel_sections[j] = (REL*) malloc(sizeof (REL));
@@ -27,8 +29,9 @@ REL** get_rel_sections(FILE* fichier, SEC_HEADER** sections, int nbSecs)
 				fread(&rel_sections[j]->r_offset,sizeof(int),1,fichier);
 				fread(&rel_sections[j]->r_info,sizeof(int),1,fichier);
 
-				printf("%x %x ", htobe32(rel_sections[j]->r_offset), htobe32(rel_sections[j]->r_info));
-				printf("| Symb : %x Type : %x | ", htobe32(rel_sections[j]->r_info) >> 8, (unsigned char)htobe32(rel_sections[j]->r_info));
+				printf("%8x %8x ", htobe32(rel_sections[j]->r_offset), htobe32(rel_sections[j]->r_info));
+				printf("%8x %8x ", htobe32(rel_sections[j]->r_info) >> 8, (unsigned char)htobe32(rel_sections[j]->r_info));
+				printf("\n");
 			}
 			printf("\n");
 		}
@@ -38,6 +41,8 @@ REL** get_rel_sections(FILE* fichier, SEC_HEADER** sections, int nbSecs)
 			if (rela_sections == NULL)
         return NULL;
         
+			printf("%s : \n",sections[i]->sh_name);
+			printf("Decalage|  Info  |Addened |  Symb  |  Type  ");
 			for(j = 0; j < htobe32(sections[i]->sh_size); j += 12)
 			{
 				rela_sections[j] = (RELA*) malloc(sizeof (RELA));
@@ -48,8 +53,9 @@ REL** get_rel_sections(FILE* fichier, SEC_HEADER** sections, int nbSecs)
 				fread(&rela_sections[j]->r_offset,sizeof(int),1,fichier);
 				fread(&rela_sections[j]->r_info,sizeof(int),1,fichier);
 
-				printf("%x %x %x", htobe32(rela_sections[j]->r_offset), htobe32(rela_sections[j]->r_info),htobe32(rela_sections[j]->r_addend));
-				printf("| Symb : %x Type : %x | ", htobe32(rela_sections[j]->r_info) >> 8, (unsigned char)htobe32(rela_sections[j]->r_info));
+				printf("%8x %8x %8x ", htobe32(rela_sections[j]->r_offset), htobe32(rela_sections[j]->r_info),htobe32(rela_sections[j]->r_addend));
+				printf("%8x %8x ", htobe32(rela_sections[j]->r_info) >> 8, (unsigned char)htobe32(rela_sections[j]->r_info));
+				printf("\n");
 			}
 			printf("\n");
 		}
