@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "section_header.h"
 #include "rel.h"
 
 REL** get_rel_sections(FILE* fichier, SEC_HEADER** sections, int nbSecs)

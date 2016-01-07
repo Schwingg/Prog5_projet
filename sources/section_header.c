@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-//#include "read_header.h"
+#include "read_header.h"
 #include "section_header.h"
 
 SEC_HEADER **section_header(FILE* fichier, HEADER* hed) {
