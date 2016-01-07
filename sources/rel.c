@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "read_header.h"
 #include "section_header.h"
 #include "rel.h"
 
