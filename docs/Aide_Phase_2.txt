@@ -1,0 +1,1 @@
+http://wiki.osdev.org/ELF_Tutorial#Relocation_Sections
