@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "rel.h"
-//coucou
+
 REL** get_rel_sections(FILE* fichier, SEC_HEADER** sections, int nbSecs)
 {
 	int i = 0, j = 0;
