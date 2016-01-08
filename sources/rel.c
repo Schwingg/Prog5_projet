@@ -62,7 +62,7 @@ void display_rel_sections(FILE* fichier, SEC_HEADER** sections, int nbSecs)
 	}
 }
 
-SEC_HEADER ** get_rel_sections(SEC_HEADER ** sections, int nbSecs)
+SEC_HEADER ** get_rel_sections(SEC_HEADER ** sections, int nbSecs, int * nb_rel_sec)
 {
 	int i = 0, j = 0;
 	SEC_HEADER** rel_sections = (SEC_HEADER**) malloc(sizeof(SEC_HEADER)*nbSecs);
@@ -74,7 +74,8 @@ SEC_HEADER ** get_rel_sections(SEC_HEADER ** sections, int nbSecs)
 			rel_sections[j] = sections[i];
 		}
 	}
-	rel_sections = (SEC_HEADER**) realloc(rel_sections,sizeof(SEC_HEADER)*(j+1));
+	*nb_rel_sec = j + 1;
+	rel_sections = (SEC_HEADER**) realloc(rel_sections,sizeof(SEC_HEADER)*&nb_rel_sec);
 
 	return rel_sections;
 }

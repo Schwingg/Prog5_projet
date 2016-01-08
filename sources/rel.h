@@ -1,5 +1,3 @@
-
-
 typedef struct {
 	unsigned long r_offset ;
 	unsigned long r_info;
