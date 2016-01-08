@@ -37,7 +37,7 @@ void display_rel_sections(FILE* fichier, SEC_HEADER** sections, int nbSecs)
 		}
 		else if(strstr(sections[i]->sh_name,".rela.") != NULL)
 		{
-			RELA **rela_sections = (RELA **) malloc(sections[i]->sh_offset/12 * (sizeof (RELA))); // 3 words (12 bytes)
+			REL **rela_sections = (REL **) malloc(sections[i]->sh_offset/12 * (sizeof (REL))); // 3 words (12 bytes)
 			if (rela_sections == NULL)
         exit(1);
         
@@ -45,7 +45,7 @@ void display_rel_sections(FILE* fichier, SEC_HEADER** sections, int nbSecs)
 			printf("Decalage|  Info  |Addened |  Symb  |  Type  ");
 			for(j = 0; j < htobe32(sections[i]->sh_size); j += 12)
 			{
-				rela_sections[j] = (RELA*) malloc(sizeof (RELA));
+				rela_sections[j] = (REL*) malloc(sizeof (REL));
 				if (rela_sections[j] == NULL)
 					exit(1);
 			
@@ -60,4 +60,42 @@ void display_rel_sections(FILE* fichier, SEC_HEADER** sections, int nbSecs)
 			printf("\n");
 		}
 	}
+}
+
+SEC_HEADER ** get_rel_sections(SEC_HEADER ** sections, int nbSecs)
+{
+	int i = 0, j = 0;
+	SEC_HEADER** rel_sections = (SEC_HEADER**) malloc(sizeof(SEC_HEADER)*nbSecs);
+	
+	for(i = 0; i < nbSecs; i++)
+	{
+		if(strstr(sections[i]->sh_name,".rel.") != NULL || strstr(sections[i]->sh_name,".rela.") != NULL)
+		{
+			rel_sections[j] = sections[i];
+		}
+	}
+	rel_sections = (SEC_HEADER**) realloc(rel_sections,sizeof(SEC_HEADER)*(j+1));
+
+	return rel_sections;
+}
+
+REL** get_rel_entries(SEC_HEADER * section)
+{
+	int j = 0;
+	REL **rel_sections = (REL **) malloc(section->sh_offset/section->sh_entsize * (sizeof (REL)));
+	        
+	for(j = 0; j < htobe32(section->sh_size); j += section->sh_entsize)
+	{
+		rel_sections[j] = (REL*) malloc(sizeof (REL));
+		
+		fseek(fichier,htobe32(section->sh_offset)+j,SEEK_SET);
+		fread(&rel_sections[j]->r_offset,sizeof(int),1,fichier);
+		fread(&rel_sections[j]->r_info,sizeof(int),1,fichier);
+		if(section->sh_type == 4)
+		{
+			rel_sections[j]->rela = 1;
+			fread(&rel_sections[j]->r_addend,sizeof(int),1,fichier);
+		}
+	}
+	return rel_sections;
 }
