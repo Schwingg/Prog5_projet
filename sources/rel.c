@@ -5,7 +5,7 @@
 #include "section_header.h"
 #include "rel.h"
 
-REL** get_rel_sections(FILE* fichier, SEC_HEADER** sections, int nbSecs)
+void display_rel_sections(FILE* fichier, SEC_HEADER** sections, int nbSecs)
 {
 	int i = 0, j = 0;
 	
@@ -15,7 +15,7 @@ REL** get_rel_sections(FILE* fichier, SEC_HEADER** sections, int nbSecs)
 		{
 			REL **rel_sections = (REL **) malloc(sections[i]->sh_offset/8 * (sizeof (REL))); // 2 words (8 bytes)
 			if (rel_sections == NULL)
-        return NULL;
+        exit(1);
         
 			printf("%s : \n",sections[i]->sh_name);
 			printf("Decalage|  Info  |   Symb  |  Type  \n");
@@ -23,7 +23,7 @@ REL** get_rel_sections(FILE* fichier, SEC_HEADER** sections, int nbSecs)
 			{
 				rel_sections[j] = (REL*) malloc(sizeof (REL));
 				if (rel_sections[j] == NULL)
-					return NULL;
+					exit(1);
 			
 				fseek(fichier,htobe32(sections[i]->sh_offset)+j,SEEK_SET);
 				fread(&rel_sections[j]->r_offset,sizeof(int),1,fichier);
@@ -39,7 +39,7 @@ REL** get_rel_sections(FILE* fichier, SEC_HEADER** sections, int nbSecs)
 		{
 			RELA **rela_sections = (RELA **) malloc(sections[i]->sh_offset/12 * (sizeof (RELA))); // 3 words (12 bytes)
 			if (rela_sections == NULL)
-        return NULL;
+        exit(1);
         
 			printf("%s : \n",sections[i]->sh_name);
 			printf("Decalage|  Info  |Addened |  Symb  |  Type  ");
@@ -47,7 +47,7 @@ REL** get_rel_sections(FILE* fichier, SEC_HEADER** sections, int nbSecs)
 			{
 				rela_sections[j] = (RELA*) malloc(sizeof (RELA));
 				if (rela_sections[j] == NULL)
-					return NULL;
+					exit(1);
 			
 				fseek(fichier,htobe32(sections[i]->sh_offset)+j,SEEK_SET);
 				fread(&rela_sections[j]->r_offset,sizeof(int),1,fichier);
@@ -60,5 +60,4 @@ REL** get_rel_sections(FILE* fichier, SEC_HEADER** sections, int nbSecs)
 			printf("\n");
 		}
 	}
-	return NULL;
 }

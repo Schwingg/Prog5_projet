@@ -79,7 +79,7 @@ int main(int argc, char *argv[]) {
             symb = symbole_header(fichier, sections[j], sections[x]);
 
 						//
-						get_rel_sections(fichier, sections, hed->e_shnum);
+						display_rel_sections(fichier, sections, hed->e_shnum);
             
             ferme();
             desalloc();

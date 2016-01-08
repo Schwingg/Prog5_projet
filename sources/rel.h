@@ -11,4 +11,4 @@ typedef struct{
 	long r_addend;
 } RELA;
 
-REL** get_rel_sections(FILE* fichier, SEC_HEADER** sections, int nbSecs);
+void display_rel_sections(FILE* fichier, SEC_HEADER** sections, int nbSecs);
