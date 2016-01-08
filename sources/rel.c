@@ -70,20 +70,21 @@ SEC_HEADER ** get_rel_sections(SEC_HEADER ** sections, int nbSecs, int * nb_rel_
 		if(strstr(sections[i]->sh_name,".rel.") != NULL || strstr(sections[i]->sh_name,".rela.") != NULL)
 		{
 			rel_sections[j] = sections[i];
+			j++;
 		}
 	}
 	*nb_rel_sec = j + 1;
-	rel_sections = (SEC_HEADER**) realloc(rel_sections,sizeof(SEC_HEADER)*&nb_rel_sec);
 
 	return rel_sections;
 }
 
-REL** get_rel_entries(SEC_HEADER * section)
+REL** get_rel_entries(SEC_HEADER * section, int* nb_entrees)
 {
 	int j = 0;
-	REL **rel_sections = (REL **) malloc(section->sh_offset/section->sh_entsize * (sizeof (REL)));
+	
+	REL **rel_sections = (REL **) malloc(htobe32(section->sh_offset)/htobe32(section->sh_entsize) * (sizeof (REL)));
 	        
-	for(j = 0; j < htobe32(section->sh_size); j += section->sh_entsize)
+	for(j = 0; j < htobe32(section->sh_size)/htobe32(section->sh_entsize); j++)
 	{
 		rel_sections[j] = (REL*) malloc(sizeof (REL));
 		
@@ -96,5 +97,7 @@ REL** get_rel_entries(SEC_HEADER * section)
 			fread(&rel_sections[j]->r_addend,sizeof(int),1,fichier);
 		}
 	}
+
+	*nb_entrees = j;
 	return rel_sections;
 }
