@@ -3,8 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "read_header.h"
-#include "section_header.h"
+#include "projet.h"
 
 SEC_HEADER **section_header(FILE* fichier, HEADER* hed) {
     unsigned int pos = 0;
