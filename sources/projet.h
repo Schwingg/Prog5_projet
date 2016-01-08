@@ -1,4 +1,3 @@
-
 FILE *fichier;
 ///////////////////////////////MAIN///////////////////////////////////
 /*
@@ -121,11 +120,12 @@ typedef struct {
 
 void display_rel_sections(FILE* fichier, SEC_HEADER** sections, int nbSecs);
 
-SEC_HEADER ** get_rel_sections(SEC_HEADER ** sections, int nbSecs);
+SEC_HEADER ** get_rel_sections(SEC_HEADER ** sections, int nbSecs, int * nb_rel_sec);
 
-REL** get_rel_entries(SEC_HEADER * section);
+REL** get_rel_entries(SEC_HEADER * section, int* nb_entrees);
 ///////////////////////////////////////////////////////////////////////
 
+void num_section(SEC_HEADER ** sections, SEC_HEADER ** rel_sections, int nb_rel_secs, FILE * fichier);
 
 
 HEADER *hed;

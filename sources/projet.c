@@ -76,6 +76,8 @@ int main(int argc, char *argv[]) {
 
 						//
 						display_rel_sections(fichier, sections, hed->e_shnum);
+						int a = 0;
+						num_section(sections,get_rel_sections(sections,hed->e_shnum,&a),3,fichier);
             
             ferme();
             desalloc();
