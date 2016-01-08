@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "read_header.h"
 #include <stdlib.h>
+#include "projet.h"
 
 // Reads octet bytes, taking in account the Endianness
 

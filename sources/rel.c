@@ -1,9 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "read_header.h"
-#include "section_header.h"
-#include "rel.h"
+#include "projet.h"
 
 void display_rel_sections(FILE* fichier, SEC_HEADER** sections, int nbSecs)
 {

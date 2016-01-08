@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "read_header.h"
-#include "section_header.h"
-#include "read_section.h"
+#include "projet.h"
 
 
 //Displays each section's content in hex format

@@ -1,12 +1,8 @@
 #include <stdio.h>
 #include <string.h>
-#include "read_header.h"
 #include <stdlib.h>
-#include "section_header.h"
-#include "symbolheader.h"
 #include "projet.h"
-#include "read_section.h"
-#include "rel.h"
+
 
 //Closes the file
 

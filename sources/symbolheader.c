@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "read_header.h"
-#include "section_header.h"
-#include "symbolheader.h"
+#include "projet.h"
 
 
 /*Paramètres: - symb_tab - .symtab section structure
