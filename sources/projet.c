@@ -24,35 +24,26 @@ void desalloc() {
 
 int main(int argc, char *argv[]) {
     if (argc == 2) {
-        //allocation du header ELF
-        hed = (HEADER *) malloc(sizeof (HEADER));
-        if (hed == NULL)
-            return 1;
+        //allocation du header ELF à faire dans read_header.c
         if ((fichier = fopen(argv[1], "r"))) {
-            /* Open the file passed in argv[1] */
+            // Open the file passed in argv[1] 
         } else {
             printf("impossible de lire le fichier\n");
             return 1;
         }
+        
         //PART 1
         hed = read_header(fichier); // No error during header reading
         if (hed->ELF == 1 && hed->EI_DATA == 0 && hed->EI_CLASS == 32) {
             ferme();
+            
             //PART 2
             //Starting the reading of the section header
             fichier = fopen(argv[1], "r");
-            //Section header allocation
-            sections = (SEC_HEADER **) malloc(hed->e_shnum * (sizeof (SEC_HEADER)));
-            if (sections == NULL)
-                return 1;
-            int i;
-            for (i = 0; i < hed->e_shnum; i++) {
-                sections[i] = (SEC_HEADER*) malloc(sizeof (SEC_HEADER));
-                if (sections[i] == NULL)
-                    return 1;
-            }
+            //Section header allocation in section_header.c           
             sections = section_header(fichier, hed);
             ferme();
+            
             //PART 3
             //Sections content reading
             fichier = fopen(argv[1], "r");
@@ -63,7 +54,7 @@ int main(int argc, char *argv[]) {
             
             //PART 4
             //Symbols reading
-            int j, x;
+            int j, x, i;
             for (i = 0; i < hed->e_shnum; i++) {
                 if (strcmp(sections[i]->sh_name, ".symtab") == 0) {
                     j = i;

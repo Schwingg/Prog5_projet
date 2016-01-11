@@ -74,7 +74,7 @@ typedef struct {
 
 //FILE* fichier;
 
-HEADER* hed;
+
 
 /*
  * This program permit to get the header of a section.
@@ -88,9 +88,6 @@ SEC_HEADER **section_header(FILE *fichier, HEADER *hed);
 ///////////////////////////////linked to read_section.c////////////////
 //FILE* fichier;
 
-HEADER* hed;
-
-SEC_HEADER **sections;
 
 int read_section(FILE* fichier, SEC_HEADER **sections, HEADER *hed);
 ///////////////////////////////////////////////////////////////////////
