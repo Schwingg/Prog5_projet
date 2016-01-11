@@ -69,7 +69,7 @@ SEC_HEADER **section_header(FILE* fichier, HEADER* hed) {
     }
 
     //Display the informations
-    for (i = 0; i < hed->e_shnum; i++) {
+    /*for (i = 0; i < hed->e_shnum; i++) {
         printf("[%d]\n", i);
         printf("Name :		%s\n", sections[i]->sh_name);
         printf("Type :		");
@@ -160,7 +160,7 @@ SEC_HEADER **section_header(FILE* fichier, HEADER* hed) {
         printf("Info :		%d\n", htobe32(sections[i]->sh_info));
         printf("AddrAlign :	%d\n", htobe32(sections[i]->sh_addralign));
         printf("------------------\n");
-    }
+    }*/
 
 
     return sections;

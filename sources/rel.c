@@ -3,7 +3,7 @@
 #include <string.h>
 #include "projet.h"
 
-void display_rel_sections(FILE* fichier, SEC_HEADER** sections, int nbSecs)
+/*void display_rel_sections(FILE* fichier, SEC_HEADER** sections, int nbSecs)
 {
 	int i = 0, j = 0;
 	
@@ -58,7 +58,7 @@ void display_rel_sections(FILE* fichier, SEC_HEADER** sections, int nbSecs)
 			printf("\n");
 		}
 	}
-}
+}*/
 
 SEC_HEADER ** get_rel_sections(SEC_HEADER ** sections, int nbSecs)
 {

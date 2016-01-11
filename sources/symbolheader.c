@@ -7,7 +7,7 @@
  							- str_tab - .strtab section structure
  */							
 SYMB_HEADER **symbole_header(FILE* fichier, SEC_HEADER* symb_tab, SEC_HEADER* str_tab){
-		unsigned long SYMB_HEAD_IDX = htobe32(symb_tab->sh_offset);
+	unsigned long SYMB_HEAD_IDX = htobe32(symb_tab->sh_offset);
     unsigned long SYMB_SIZE = htobe32(symb_tab->sh_size);
     unsigned long STR_HEAD_IDX = htobe32(str_tab->sh_offset);
     int i = 0;
@@ -16,7 +16,7 @@ SYMB_HEADER **symbole_header(FILE* fichier, SEC_HEADER* symb_tab, SEC_HEADER* st
     int nbr_symb = SYMB_SIZE / LONGUEUR_SYMB;
     
     //Allocation
-    SYMB_HEADER **symbole = (SYMB_HEADER **) malloc(nbr_symb * (sizeof (SYMB_HEADER)));
+    SYMB_HEADER ** symbole = (SYMB_HEADER **) malloc(nbr_symb * (sizeof (SYMB_HEADER)));
     if (symbole == NULL)
         return NULL;
     for (i = 0; i < nbr_symb; i++) {
@@ -64,7 +64,7 @@ SYMB_HEADER **symbole_header(FILE* fichier, SEC_HEADER* symb_tab, SEC_HEADER* st
     
     
     //display
-    for (i=0;i < nbr_symb ;i++){
+    /*for (i=0;i < nbr_symb ;i++){
     	printf("Name :		%s\n", symbole[i]->st_name);
     	printf("Value :		%x\n", symbole[i]->st_value);
     	printf("Size :		%d\n", symbole[i]->st_size);
@@ -114,6 +114,6 @@ SYMB_HEADER **symbole_header(FILE* fichier, SEC_HEADER* symb_tab, SEC_HEADER* st
     	printf("Other :		DEFAULT\n");// Unused value : st_other
     	printf("Ndx :		%d\n", symbole[i]->st_shndx);
     	printf("---------------------\n\n");
-    	}
+    	}*/
    return symbole;
    }

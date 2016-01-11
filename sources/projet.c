@@ -1,8 +1,7 @@
 #include <stdio.h>
+#include "projet.h"
 #include <string.h>
 #include <stdlib.h>
-#include "projet.h"
-
 
 //Closes the file
 
@@ -36,6 +35,7 @@ int main(int argc, char *argv[]) {
         }
         //PART 1
         hed = read_header(fichier); // No error during header reading
+        display_header(hed);
         if (hed->ELF == 1 && hed->EI_DATA == 0 && hed->EI_CLASS == 32) {
             ferme();
             //PART 2
@@ -52,6 +52,7 @@ int main(int argc, char *argv[]) {
                     return 1;
             }
             sections = section_header(fichier, hed);
+            display_sections_table(hed);
             ferme();
             //PART 3
             //Sections content reading
@@ -73,9 +74,12 @@ int main(int argc, char *argv[]) {
                 }
             }
             symb = symbole_header(fichier, sections[j], sections[x]);
+            display_symbols(sections[j], sections[x], symb);
 
-						//
-						display_rel_sections(fichier, sections, hed->e_shnum);
+			//PART 5
+			//display_rel_sections(fichier, sections, hed->e_shnum);
+			display_rel_a(sections, hed->e_shnum);
+			
             
             ferme();
             desalloc();

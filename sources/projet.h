@@ -1,3 +1,4 @@
+
 FILE *fichier;
 ///////////////////////////////MAIN///////////////////////////////////
 /*
@@ -33,15 +34,26 @@ typedef struct {
     unsigned int e_shentsize;
     unsigned int e_shnum;
     unsigned int e_shstrndx;
+    ///////////
+    int version;
+    int os_type;
+    int abi_ver;
+    int elf_ftype;
+    int hw_target;
+    int elf_ver;
+    int flags;
+    
 } HEADER;
 
-//FILE* fichier;
 
 
 /*
  Contains the function allowing to read the header
  */
 HEADER *read_header(FILE *fichier);
+
+//print function
+void display_header(HEADER *hed);
 
 /*
  Allows to skip a defined number of bytes
@@ -72,7 +84,8 @@ typedef struct {
     int sh_entsize;
 } SEC_HEADER;
 
-//FILE* fichier;
+//display function
+void display_sections_table(HEADER* hed);
 
 HEADER* hed;
 
@@ -106,6 +119,8 @@ typedef struct {
     unsigned short st_shndx;
 }SYMB_HEADER;
 
+void display_symbols(SEC_HEADER* symb_tab, SEC_HEADER* str_tab, SYMB_HEADER **symbole);
+
 SYMB_HEADER **symbole_header(FILE* fichier, SEC_HEADER* symb_tab, SEC_HEADER* str_tab);
 ///////////////////////////////////////////////////////////////////////
 
@@ -118,7 +133,9 @@ typedef struct {
 	int rela;
 } REL;
 
-void display_rel_sections(FILE* fichier, SEC_HEADER** sections, int nbSecs);
+//void display_rel_sections(FILE* fichier, SEC_HEADER** sections, int nbSecs);
+
+void display_rel_a(SEC_HEADER** sections, int nbSecs);
 
 SEC_HEADER ** get_rel_sections(SEC_HEADER ** sections, int nbSecs);
 
