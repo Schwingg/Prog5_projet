@@ -88,7 +88,7 @@ REL** get_rel_entries(SEC_HEADER * section, int* nb_entrees)
 	{
 		rel_sections[j] = (REL*) malloc(sizeof (REL));
 		
-		fseek(fichier,htobe32(section->sh_offset)+j,SEEK_SET);
+		fseek(fichier,htobe32(section->sh_offset)+(j*8),SEEK_SET);
 		fread(&rel_sections[j]->r_offset,sizeof(int),1,fichier);
 		fread(&rel_sections[j]->r_info,sizeof(int),1,fichier);
 		if(section->sh_type == 4)
