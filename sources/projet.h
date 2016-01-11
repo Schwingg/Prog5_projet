@@ -87,7 +87,7 @@ typedef struct {
 //display function
 void display_sections_table(HEADER* hed);
 
-HEADER* hed;
+
 
 /*
  * This program permit to get the header of a section.
@@ -101,9 +101,6 @@ SEC_HEADER **section_header(FILE *fichier, HEADER *hed);
 ///////////////////////////////linked to read_section.c////////////////
 //FILE* fichier;
 
-HEADER* hed;
-
-SEC_HEADER **sections;
 
 int read_section(FILE* fichier, SEC_HEADER **sections, HEADER *hed);
 ///////////////////////////////////////////////////////////////////////
@@ -137,11 +134,12 @@ typedef struct {
 
 void display_rel_a(SEC_HEADER** sections, int nbSecs);
 
-SEC_HEADER ** get_rel_sections(SEC_HEADER ** sections, int nbSecs);
+SEC_HEADER ** get_rel_sections(SEC_HEADER ** sections, int nbSecs, int * nb_rel_sec);
 
-REL** get_rel_entries(SEC_HEADER * section);
+REL** get_rel_entries(SEC_HEADER * section, int* nb_entrees);
 ///////////////////////////////////////////////////////////////////////
 
+void num_section(SEC_HEADER ** sections, SEC_HEADER ** rel_sections, int nb_rel_secs, FILE * fichier);
 
 
 HEADER *hed;

@@ -24,12 +24,12 @@
 \item Affichage de l'en-t\^ete \textbf{OK le 05/01/16} 
 \item Affichage de la table des sections et des détails
 	relatifs \'a chaque section \textbf{OK le 06/01/16} 
-\item Affichage du contenu d'une section
+\item Affichage du contenu d'une section \textbf{OK le 07/01/16} 
 \item Affichage de la table des symboles et des détails relatifs 
-	\'a chaque symbole
+	\'a chaque symbole \textbf{OK le 07/01/16} 
 \item Affichage des tables de réimplantation et des détails relatifs 
-	\'a chaque entrée 
-\item Renumérotation des sections
+	\'a chaque entrée \textbf{OK le 08/01/16} 
+\item Renumérotation des sections \textbf{OK le 11/01/16} 
 \item Correction des symboles
 \item Réimplantations de type \textbf{R\_ARM\_ABS*}
 \item Réimplantations de type \textbf{R\_ARM\_JUMP24} et 
@@ -58,26 +58,63 @@ Il s'agit de notre premier jour pour ce projet. Nous avons pris
 connaissance du sujet et des différents aspects qui devront être 
 abordés. Nous avons aussi mis en place un projet sur gitHub qui nous 
 permettra de synchroniser nos travaux. Nous avons également 
-commencé a mettre en place la lecture de l'en-t\^ete des fichier 
+commencé a mettre en place la lecture de l'en-t\^ete des fichiers 
 ELF.
 
 \section{Mardi 5 Janvier}
 
-Nous commencons cette journée par les questions aux professeurs a propos de 
-l`utilisation de l`emulateur ARM qui nous est donn\'e. Nous avons egalement 
+Nous commençons cette journée par les questions aux professeurs à propos de 
+l`utilisation de l`emulateur ARM qui nous est donn\'e. Nous avons également 
 mis au propre le code que nous avions fait hier.
 
-Ensuite, nous avons ajouté une structure pour faciliter l'accès aux informations lues dans le header du fichier ELF.
-En parallèle, l'étude théorique de l'affichage du tableau des sections a été réalisée. L'implémentation sera réalisée prochainement.
+Ensuite, nous avons ajouté une structure pour faciliter l'accès aux 
+informations lues dans l’entête du fichier ELF. En parallèle, l'étude 
+théorique de l'affichage du tableau des sections a été réalisée. 
+L'implémentation sera réalisée prochainement.
 
 Enfin, le code existant a été nettoyé et commenté.
 
-\section{mercredi 6 Janvier}
+\section{Mercredi 6 Janvier}
 
-L'implémentation et le déboggage lié au projet de l'affichage du tableau des sections a été réalisé.
-Une première version de l'affichage d'une section également, pour l'instant la fonction affiche toutes les sections, sans prendre en compte le choix de l'utilisateur (ce qui sera implémenté prochainement).
+L'implémentation et le débogage lié au projet de l'affichage du tableau des 
+sections a été réalisé.Une première version de l'affichage d'une section 
+également, pour l'instant la fonction affiche toutes les sections, sans 
+prendre en compte le choix de l'utilisateur (ce qui sera implémenté 
+prochainement).
 
-Nous avons également réalisé quelques tests sur nos anciennes fonctions et commencé à factoriser le code.
+Nous avons également réalisé quelques tests sur nos anciennes fonctions et 
+commencé à factoriser le code.
+
+\section{Jeudi 7 Janvier}
+
+Nous avons fini de faire la lecture du contenu des sections. Nous avons 
+également commenc\'e a envisager de faire une réunion des ".h". 
+
+Les tests des fonctions utiles à la lecture du contenu des sections ont 
+également étaient fait dans le but de corriger les erreurs d'affichage ainsi 
+que les erreurs de lecture (big/little endian).
+
+Nous avons également fait la mise en place de l’affichage des tables de symboles.
+
+\section{Vendredi 8 Janvier}
+
+Nous avons fait la réunifications de tous les ".h" dans un but de 
+simplification.
+
+Nous avons mis en place l’affichage des tables de r\'eimplémentation, ce qui 
+est utile pour la renumérotation des sections.
+
+Nous avons également commencé le codage et la compréhension de la 
+renumérotation des sections. 
+
+\section{Lundi 11 Janvier}
+
+Mise en place des options pour pouvoir contrôler notre programme ce qui avait 
+étais omis precedement.
+
+Fin du codage de la renumérotation des sections et mise en test de cette partie.
+
+Réunion de mi-projet avec le corps enseignant.
 
 \end{document}
 
