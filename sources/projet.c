@@ -74,9 +74,13 @@ int main(int argc, char *argv[]) {
             }
             symb = symbole_header(fichier, sections[j], sections[x]);
 
-						//
-						display_rel_sections(fichier, sections, hed->e_shnum);
-            
+	    // Step 6 (not finished)
+	    display_rel_sections(fichier, sections, hed->e_shnum);
+	    int a = 0;
+	    // TODO : optimize the function call to get a
+	    get_rel_sections(sections,hed->e_shnum,&a); // To get a (number of rel section)
+	    num_section(sections,get_rel_sections(sections,hed->e_shnum,&a),a,fichier);
+
             ferme();
             desalloc();
             return 0;
