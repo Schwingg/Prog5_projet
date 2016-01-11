@@ -73,7 +73,7 @@ SEC_HEADER ** get_rel_sections(SEC_HEADER ** sections, int nbSecs, int * nb_rel_
 			j++;
 		}
 	}
-	*nb_rel_sec = j + 1;
+	*nb_rel_sec = j;
 
 	return rel_sections;
 }
