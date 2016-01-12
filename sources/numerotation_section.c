@@ -204,7 +204,7 @@ void num_section(HEADER * hdr, SEC_HEADER ** sections, int nb_rel_secs, SYMB_HEA
     oct = 0;
     j++;
   }
-		
+  free(index);
   fclose(fres);
   //}
 }

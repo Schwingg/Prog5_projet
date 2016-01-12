@@ -1,0 +1,7 @@
+offset cible + decalage entrée readressage = position à compléter
+
+valeur symbole (S)
+
+Valeurs possibles dans les zones à compléter => addend (A)
+
+S + A => valeur à écrire dans la position à compléter
