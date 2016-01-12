@@ -74,7 +74,7 @@ int main(int argc, char *argv[]) {
 	    int a = 0;
 	    // TODO : optimize the function call to get a
 	    get_rel_sections(sections,hed->e_shnum,&a); // To get a (number of rel section)
-	    num_section(sections,hed->e_shnum,a,fichier);
+	    num_section(hed,sections,a,fichier);
 
             ferme();
             desalloc();

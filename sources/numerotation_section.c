@@ -3,9 +3,10 @@
 #include <string.h>
 #include "projet.h"
 
-void num_section(SEC_HEADER ** sections, int nbSecs, int nb_rel_secs, FILE * fichier)
+void num_section(HEADER * hdr, SEC_HEADER ** sections, int nb_rel_secs, FILE * fichier)
 {
   FILE* fres = fopen("test.o", "w");
+  int nbSecs = hdr->e_shnum;
 
   fseek(fichier,0,SEEK_SET);
 
@@ -34,34 +35,40 @@ void num_section(SEC_HEADER ** sections, int nbSecs, int nb_rel_secs, FILE * fic
 
   j += 4;
 		
-  while(j < 0x1b0){ // Read until section header
+  while(j < hdr->e_shoff){ // Read until section header
     fread(&oct,1,1,fichier);
     fwrite(&oct,1,1,fres);
     oct = 0;
     j++;
   }
 
-  int k = 0, l = 0, word = 0;
+  int k = 0, l = 0, word = 0, addrRel = 0x7FFFFFFF;
 		
   for(k = 0; k < nbSecs; k++) // Read section table
   {
     if(strstr(sections[k]->sh_name,".rel.") != NULL)
-      fseek(fichier,40,SEEK_CUR);
+    {
+      fseek(fichier,hdr->e_shentsize/10*4,SEEK_CUR);
+      fread(&word,sizeof(int),1,fichier);
+      if(htobe32(word) < addrRel)
+	addrRel = htobe32(word);
+      fseek(fichier,hdr->e_shentsize/10*5,SEEK_CUR);
+    }
     else if(strcmp(sections[k]->sh_name,".symtab") == 0){
-      for(l = 0; l < 16; l++){
+      for(l = 0; l < hdr->e_shentsize/10*4; l++){
 	fread(&oct,1,1,fichier);
 	fwrite(&oct,1,1,fres);
 	oct = 0;
       }
 		    
       fread(&word,sizeof(int),1,fichier); // Read link part
-      word = htobe32(word) - (nb_rel_secs*40);
+      word = htobe32(word) - (nb_rel_secs*hdr->e_shentsize);
       word = htobe32(word);
       //printf("%d\n",word);
       fwrite(&word,sizeof(int),1,fres);
       word = 0;
 
-      for(l = 0; l < 4; l++){
+      for(l = 0; l < hdr->e_shentsize/10; l++){
 	fread(&oct,1,1,fichier);
 	fwrite(&oct,1,1,fres);
 	oct = 0;
@@ -73,30 +80,30 @@ void num_section(SEC_HEADER ** sections, int nbSecs, int nb_rel_secs, FILE * fic
       //printf("%d\n",word);
       fwrite(&word,sizeof(int),1,fres);
       word = 0;
-      for(l = 0; l < 12; l++){
+      for(l = 0; l < hdr->e_shentsize/10*3; l++){
 	fread(&oct,1,1,fichier);
 	fwrite(&oct,1,1,fres);
 	oct = 0;
       }
     }
     else if(strcmp(sections[k]->sh_name,".strtab") == 0){
-      for(l = 0; l < 16; l++){
+      for(l = 0; l < hdr->e_shentsize/10*4; l++){
 	fread(&oct,1,1,fichier);
 	fwrite(&oct,1,1,fres);
 	oct = 0;
       }
       fread(&word,sizeof(int),1,fichier);
-      word = htobe32(word) - (nb_rel_secs*40);
+      word = htobe32(word) - (nb_rel_secs*hdr->e_shentsize);
       word = htobe32(word);
       fwrite(&word,sizeof(int),1,fres);
       word = 0;
-      for(l = 0; l < 20; l++){
+      for(l = 0; l < hdr->e_shentsize/10*5; l++){
 	fread(&oct,1,1,fichier);
 	fwrite(&oct,1,1,fres);
 	oct = 0;
       }
     }else{
-      for(l = 0; l < 40; l++){
+      for(l = 0; l < hdr->e_shentsize; l++){
 	fread(&oct,1,1,fichier);
 	fwrite(&oct,1,1,fres);
 	oct = 0;
@@ -104,9 +111,9 @@ void num_section(SEC_HEADER ** sections, int nbSecs, int nb_rel_secs, FILE * fic
     }
   }
 		
-  j += nbSecs*40;
+  j += nbSecs*hdr->e_shentsize;
 
-  while(j < 0x500){
+  while(j < addrRel){
     fread(&oct,1,1,fichier);
     fwrite(&oct,1,1,fres);
     oct = 0;
