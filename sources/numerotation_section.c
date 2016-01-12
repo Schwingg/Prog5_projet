@@ -194,7 +194,6 @@ void num_section(HEADER * hdr, SEC_HEADER ** sections, int nb_rel_secs, SYMB_HEA
     }
     fseek(fichier,2,SEEK_CUR);
     nb = htobe16(index[k]);
-    printf("%d\n", index[k]);
     fwrite(&nb,sizeof(short),1,fres);
     nb = 0;
   }
