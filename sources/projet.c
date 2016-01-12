@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
     if (argc == 2) {
         //allocation du header ELF à faire dans read_header.c
         if ((fichier = fopen(argv[1], "r"))) {
-            // Open the file passed in argv[1] 
+        // Open the file passed in argv[1] 
         } else {
             printf("impossible de lire le fichier\n");
             return 1;
