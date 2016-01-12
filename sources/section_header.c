@@ -1,8 +1,7 @@
 // ! Attention ! Usage de "htobe32" pour les architectures 64 bits
 // en little endian, non testé pour la carte ARM en big endian 
 
-#include <stdio.h>
-#include <stdlib.h>
+
 #include "projet.h"
 
 SEC_HEADER **section_header(FILE* fichier, HEADER* hed) {
@@ -25,7 +24,8 @@ SEC_HEADER **section_header(FILE* fichier, HEADER* hed) {
     pos = htobe32(pos);
 
     //Display the Names table position
-    printf("Position de la table des noms : 0x%04X\n", pos);
+    hed->pos=pos;
+    //printf("Position de la table des noms : 0x%04X\n", pos);
     fseek(fichier, hed->e_shoff, SEEK_SET);
 
     int idxName = 0;

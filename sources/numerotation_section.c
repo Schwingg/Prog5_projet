@@ -1,6 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+
 #include "projet.h"
 
 void num_section(HEADER * hdr, SEC_HEADER ** sections, int nb_rel_secs, FILE * fichier)

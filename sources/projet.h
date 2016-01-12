@@ -1,10 +1,10 @@
-
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <getopt.h>
 FILE *fichier;
 ///////////////////////////////MAIN///////////////////////////////////
-/*
- Contains the project's main function, with file passed as a parameter
- */
-int main(int argc, char *argv[]);
 
 
 /*
@@ -42,6 +42,7 @@ typedef struct {
     int hw_target;
     int elf_ver;
     int flags;
+    int pos;
     
 } HEADER;
 
@@ -141,8 +142,29 @@ SEC_HEADER ** get_rel_sections(SEC_HEADER ** sections, int nbSecs, int * nb_rel_
 REL** get_rel_entries(SEC_HEADER * section, int* nb_entrees);
 ///////////////////////////////////////////////////////////////////////
 
+///////////////////////////////OPTIONS//////////////////////////////////
+///////////////////////////////linked to projet.c///////////////////////
+
+typedef struct {
+    int header;
+	int section_head;
+	int section;
+	int symbols;
+	int help;
+	int reloc;
+	char* fich;
+	int sec_type; // 0 si int, 1 si char
+	char* sec_name;
+	int sec_num;
+} PAR;
+
+void parameters(int argc,char *argv[],PAR *par);
+
+///////////////////////////////////////////////////////////////////////
+
 void num_section(HEADER * hdr, SEC_HEADER ** sections, int nb_rel_secs, FILE * fichier);
 
+   //parameters handler
 
 HEADER *hed;
 

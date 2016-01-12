@@ -1,7 +1,4 @@
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "projet.h"
 
 
@@ -153,6 +150,7 @@ void display_header(HEADER *hed){
 ////////////////////SECTIONS_TABLE///////////
 void display_sections_table(HEADER* hed){
         int i;
+        printf("Position de la table des noms : 0x%04X\n", hed->pos);
         for (i = 0; i < hed->e_shnum; i++) {
         printf("[%d]\n", i);
         printf("Name :		%s\n", sections[i]->sh_name);
@@ -254,7 +252,7 @@ void display_sections_name(char* name,HEADER* hed,SEC_HEADER **sections,FILE* fi
     int i=0;
     int j,k=0;
     unsigned int hex = 0x0;
-    while (!found && i<hed->e_shnum){
+    while (found != 1 && i<hed->e_shnum){
         if (strcmp(name,sections[i]->sh_name) == 0){
             found = 1;
         }
