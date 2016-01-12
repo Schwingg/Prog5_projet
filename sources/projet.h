@@ -139,7 +139,7 @@ SEC_HEADER ** get_rel_sections(SEC_HEADER ** sections, int nbSecs, int * nb_rel_
 REL** get_rel_entries(SEC_HEADER * section, int* nb_entrees);
 ///////////////////////////////////////////////////////////////////////
 
-void num_section(SEC_HEADER ** sections, int nbSecs, int nb_rel_secs, FILE * fichier);
+void num_section(HEADER * hdr, SEC_HEADER ** sections, int nb_rel_secs, FILE * fichier);
 
 
 HEADER *hed;
