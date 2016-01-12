@@ -103,6 +103,8 @@ SEC_HEADER **section_header(FILE *fichier, HEADER *hed);
 
 
 int read_section(FILE* fichier, SEC_HEADER **sections, HEADER *hed);
+void display_sections_name(char* name,HEADER* hed,SEC_HEADER **sections,FILE* fichier);
+void display_sections_int(int off,HEADER* hed,SEC_HEADER **sections,FILE* fichier);
 ///////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////PARTIE 4////////////////////////////////

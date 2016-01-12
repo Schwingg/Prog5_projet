@@ -61,59 +61,5 @@ SYMB_HEADER **symbole_header(FILE* fichier, SEC_HEADER* symb_tab, SEC_HEADER* st
 				symbole[i]->st_value = htobe32(symbole[i]->st_value);
 				
     }
-    
-    
-    //display
-    /*for (i=0;i < nbr_symb ;i++){
-    	printf("Name :		%s\n", symbole[i]->st_name);
-    	printf("Value :		%x\n", symbole[i]->st_value);
-    	printf("Size :		%d\n", symbole[i]->st_size);
-      
-      switch(symbole[i]->st_info >>4){
-      		case(0):
-      			printf("LOCAL\n");
-      			break;
-      			case(1):
-      			printf("GLOBAL\n");
-      			break;
-      			case(2):
-      			printf("WEAK\n");
-      			break;
-      			case(13):
-      			printf("LOPROC\n");
-      			break;
-      			case(15):
-      			printf("HIPROC\n");
-      			break;
-      			}
-      			
-     switch(symbole[i]->st_info & 0xf){
-      		case(0):
-      			printf("NOTYPE\n");
-      			break;
-      			case(1):
-      			printf("OBJECT\n");
-      			break;
-      			case(2):
-      			printf("FUNC\n");
-      			break;
-      			case(3):
-      			printf("SECTION\n");
-      			break;
-      			case(4):
-      			printf("FILE\n");
-      			break;
-      			case(13):
-      			printf("LOPROC\n");
-      			break;
-      			case(15):
-      			printf("HIPROC\n");
-      			break;
-      			}
-
-    	printf("Other :		DEFAULT\n");// Unused value : st_other
-    	printf("Ndx :		%d\n", symbole[i]->st_shndx);
-    	printf("---------------------\n\n");
-    	}*/
    return symbole;
    }
