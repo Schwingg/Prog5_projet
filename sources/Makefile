@@ -9,3 +9,7 @@ projet: $(patsubst %.c, %.o, $(FILES))
 %.o: %.c
 	$(CC) $(CFLAGS) -c $<
 
+clean:
+	@echo "Nettoyage !\n\n"
+	rm -f *~
+	rm -f *.o
