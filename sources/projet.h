@@ -161,6 +161,8 @@ typedef struct {
 
 void parameters(int argc,char *argv[],PAR *par);
 
+void help();
+
 ///////////////////////////////////////////////////////////////////////
 void num_section(HEADER * hdr, SEC_HEADER ** sections, int nb_rel_secs, SYMB_HEADER ** symb, FILE * fichier);
 

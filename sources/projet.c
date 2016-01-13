@@ -87,82 +87,88 @@ int main(int argc, char *argv[]) {
 	
 	//END_OF_PARAMETERS//
     if (argc > 1) {
-        //allocation du header ELF à faire dans read_header.c
-        if ((fichier = fopen(par->fich, "r"))) {
-        // Open the file passed in argv[1] 
-        } else {
-            printf("impossible de lire le fichier\n");
-            return 1;
-        }
-        
-        //PART 1
-        hed = read_header(fichier); // No error during header reading
-        if(par->header ==1){
-            display_header(hed);
-        }
-        
-        if (hed->ELF == 1 && hed->EI_DATA == 0 && hed->EI_CLASS == 32) {
-            
-            //PART 2
-            //Starting the reading of the section header
-            //Section header allocation in section_header.c           
-            sections = section_header(fichier, hed);
-            if(par->section_head ==1 ){
-                display_sections_table(hed);
-            }
-            
-            //PART 3
-            //Sections content reading
-            if (read_section(fichier, sections, hed) == 1) {
-                printf("Erreur lors de lallocation du pointeur");
+        if(!par->help){
+            //allocation du header ELF à faire dans read_header.c
+            if ((fichier = fopen(par->fich, "r"))) {
+            // Open the file passed in argv[1] 
+            } else {
+                printf("impossible de lire le fichier\n");
                 return 1;
             }
-            if (par->section == 1){
-                if(par->sec_type==1){
-                    display_sections_name(par->sec_name,hed,sections,fichier);
-                }
-                else{
-                    display_sections_int(par->sec_num,hed,sections,fichier);
-                }
-            }
-            //PART 4
-            //Symbols reading
-            int j, x, i;
-            for (i = 0; i < hed->e_shnum; i++) {
-                if (strcmp(sections[i]->sh_name, ".symtab") == 0) {
-                    j = i;
-                }
-                if (strcmp(sections[i]->sh_name, ".strtab") == 0) {
-                    x = i;
-                }
-            }
-            symb = symbole_header(fichier, sections[j], sections[x]);
-            if(par->symbols == 1){
-                display_symbols(sections[j], sections[x], symb);
-            }
-
-			//PART 5
-			if (par->reloc == 1){
-			display_rel_a(sections, hed->e_shnum);
-            }
-	    // Step 6 (not finished)
-	    int a = 0;
-	    // TODO : optimize the function call to get a
-	    get_rel_sections(sections,hed->e_shnum,&a); // To get a (number of rel section)
-	    num_section(hed,sections,a,symb,fichier);
-
-            desalloc();
-            return 0;
             
-        } else {// Header reading returned an error
-            ferme();
-            free(hed);
-            return 1;
+            //PART 1
+            hed = read_header(fichier); // No error during header reading
+            if(par->header ==1){
+                display_header(hed);
+            }
+            
+            if (hed->ELF == 1 && hed->EI_DATA == 0 && hed->EI_CLASS == 32) {
+                
+                //PART 2
+                //Starting the reading of the section header
+                //Section header allocation in section_header.c           
+                sections = section_header(fichier, hed);
+                if(par->section_head ==1 ){
+                    display_sections_table(hed);
+                }
+                
+                //PART 3
+                //Sections content reading
+                if (read_section(fichier, sections, hed) == 1) {
+                    printf("Erreur lors de lallocation du pointeur");
+                    return 1;
+                }
+                if (par->section == 1){
+                    if(par->sec_type==1){
+                        display_sections_name(par->sec_name,hed,sections,fichier);
+                    }
+                    else{
+                        display_sections_int(par->sec_num,hed,sections,fichier);
+                    }
+                }
+                //PART 4
+                //Symbols reading
+                int j, x, i;
+                for (i = 0; i < hed->e_shnum; i++) {
+                    if (strcmp(sections[i]->sh_name, ".symtab") == 0) {
+                        j = i;
+                    }
+                    if (strcmp(sections[i]->sh_name, ".strtab") == 0) {
+                        x = i;
+                    }
+                }
+                symb = symbole_header(fichier, sections[j], sections[x]);
+                if(par->symbols == 1){
+                    display_symbols(sections[j], sections[x], symb);
+                }
+
+			    //PART 5
+			    if (par->reloc == 1){
+			    display_rel_a(sections, hed->e_shnum);
+                }
+	        // Step 6 (not finished)
+	        int a = 0;
+	        // TODO : optimize the function call to get a
+	        get_rel_sections(sections,hed->e_shnum,&a); // To get a (number of rel section)
+	        num_section(hed,sections,a,symb,fichier);
+
+                desalloc();
+                return 0;
+                
+            } else {// Header reading returned an error
+                ferme();
+                free(hed);
+                return 1;
+            }
+            
+        }
+        else{
+            help();
         }
     }
      else {// argv[1] is empty
-        printf("Vous devez passer un fichier en parametre\n");
-        printf("%s nom-du-fichier\n", argv[0]);
+        help();
         return 1;
     }
+    return 0;
 }

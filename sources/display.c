@@ -428,3 +428,26 @@ void display_rel_a(SEC_HEADER** sections, int nbSecs){
 	}
 }
 /////////////////////////////////////////////
+
+////////////////////HELP/////////////////////
+void help(){
+    printf("////help////\n");
+    printf("//commands//\n");
+    printf("-f : input file\n");
+    printf("    argument required (file)\n");
+    printf("\n");
+    printf("-h : display header\n");
+    printf("\n");
+    printf("-S : display section_header\n");
+    printf("\n");
+    printf("-x : display section\n");
+    printf("    argument required (number or name of section)\n");
+    printf("\n");
+    printf("-s : display symbols\n");
+    printf("\n");
+    printf("-r : display relocation info\n");
+    printf("\n");
+    printf("-H : help\n");
+    printf("////////////\n");
+}
+/////////////////////////////////////////////
