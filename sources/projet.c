@@ -51,8 +51,9 @@ void parameters(int argc,char *argv[], PAR *par){
 			break;
 		case 'x':
 			par->section=1;
-			if(!atoi(optarg))
+			if(!atoi(optarg) && optarg[0] != '0'){
 			    par->sec_type = 1;
+			}
 			if(par->sec_type==0){
 			    par->sec_num = strtol(optarg,NULL,10);
 			}
