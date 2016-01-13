@@ -1,6 +1,8 @@
 
 #include "projet.h"
 
+// TODO : use example in ARM_runner_example.c
+
 void implantation(SEC_HEADER ** sections, int nbSecs,  SYMB_HEADER ** symtab, FILE *fichier)
 {
   int nb_rel_secs = 0, i = 0, nb_entries = 0, j = 0, pos = 0, word = 0;
@@ -38,7 +40,7 @@ void implantation(SEC_HEADER ** sections, int nbSecs,  SYMB_HEADER ** symtab, FI
       word = 0;
       fread(&word,sizeof(int),1,fichier);
       s = htobe32(symtab[htobe32(rel_entries[j]->r_info) >> 8]->st_value);
-      a = htobe32(word);
+      a = word;
       t = (symtab[htobe32(rel_entries[j]->r_info) >> 8]->st_info & 0xf) == 2;
       //printf("%x\n", symtab[htobe32(rel_entries[j]->r_info) >> 8]->st_value);
       p = pos;
@@ -49,7 +51,10 @@ void implantation(SEC_HEADER ** sections, int nbSecs,  SYMB_HEADER ** symtab, FI
       else if(rel_type == 5 || rel_type == 8)
 	word = a + s; // S + A
       else if(rel_type == 28 || rel_type == 29)
+      {
 	word = ((a + s) | t) - p; // ((S + A) | T) - P
+	word = word & 0x03FFFFFE;
+      }
       else
 	printf("Type non reconnu !\n");
 
