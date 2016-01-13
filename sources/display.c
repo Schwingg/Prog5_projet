@@ -260,50 +260,54 @@ void display_sections_name(char* name,HEADER* hed,SEC_HEADER **sections,FILE* fi
             i++;
         }
     }
-    fseek(fichier, htobe32(sections[i]->sh_offset), SEEK_SET);
-    printf("Section %s\n", sections[i]->sh_name);
-    printf("addr |                data");
-    printf("\n------------------------------------------");
-    for (j = htobe32(sections[i]->sh_offset); j < htobe32(sections[i]->sh_offset) + htobe32(sections[i]->sh_size); j = j + 4) {
-            //Return to line
-            if (k %4  == 0) {
-                printf("\n%04x | ", j);
+    if (found){
+        fseek(fichier, htobe32(sections[i]->sh_offset), SEEK_SET);
+        printf("Section %s\n", sections[i]->sh_name);
+        printf("addr |                data");
+        printf("\n------------------------------------------");
+        for (j = htobe32(sections[i]->sh_offset); j < htobe32(sections[i]->sh_offset) + htobe32(sections[i]->sh_size); j = j + 4) {
+                //Return to line
+                if (k %4  == 0) {
+                    printf("\n%04x | ", j);
+                }
+                k++;
+                fread(&hex, 4, 1, fichier);
+                hex = htobe32(hex);
+                printf("%08x ", hex);
+                hex = 0;
             }
-            k++;
-            fread(&hex, 4, 1, fichier);
-            hex = htobe32(hex);
-            printf("%08x ", hex);
-            hex = 0;
-        }
-        k = 0;
-        printf("\n------------------------------------------\n");
-        printf("addr |      data");
-        printf("\n\n");
+            k = 0;
+            printf("\n------------------------------------------\n");
+            printf("addr |      data");
+            printf("\n\n");
+    }
 }
 
 void display_sections_int(int off,HEADER* hed,SEC_HEADER **sections,FILE* fichier){
     int j,k=0;
     int i =off;
     unsigned int hex = 0x0;;
-    fseek(fichier, htobe32(sections[i]->sh_offset), SEEK_SET);
-    printf("Section %s\n", sections[i]->sh_name);
-    printf("addr |                data");
-    printf("\n------------------------------------------");
-    for (j = htobe32(sections[i]->sh_offset); j < htobe32(sections[i]->sh_offset) + htobe32(sections[i]->sh_size); j = j + 4) {
-            //Return to line
-            if (k %4  == 0) {
-                printf("\n%04x | ", j);
+    if (sections[i]){
+        fseek(fichier, htobe32(sections[i]->sh_offset), SEEK_SET);
+        printf("Section %s\n", sections[i]->sh_name);
+        printf("addr |                data");
+        printf("\n------------------------------------------");
+        for (j = htobe32(sections[i]->sh_offset); j < htobe32(sections[i]->sh_offset) + htobe32(sections[i]->sh_size); j = j + 4) {
+                //Return to line
+                if (k %4  == 0) {
+                    printf("\n%04x | ", j);
+                }
+                k++;
+                fread(&hex, 4, 1, fichier);
+                hex = htobe32(hex);
+                printf("%08x ", hex);
+                hex = 0;
             }
-            k++;
-            fread(&hex, 4, 1, fichier);
-            hex = htobe32(hex);
-            printf("%08x ", hex);
-            hex = 0;
-        }
-        k = 0;
-        printf("\n------------------------------------------\n");
-        printf("addr |      data");
-        printf("\n\n");
+            k = 0;
+            printf("\n------------------------------------------\n");
+            printf("addr |      data");
+            printf("\n\n");
+     }
 }
 /////////////////////////////////////////////
 
