@@ -13,12 +13,22 @@ void ferme() {
 
 void desalloc() {
     int i;
-    for (i = 1; i < hed->e_shnum; i++) {
-        free(sections[i]);
-    }
-    free(sections);
-    free(hed);
+ 
+    free(rel_sections);
+    
+    for (i = 0; i < nbr_symb; i++) {
+        free(symb[i]);
+      }
     free(symb);
+    
+    for (i = 0; i < hed->e_shnum; i++) {
+        free(sections[i]);
+    	}
+    free(sections);
+ 
+    free(hed);
+    free(par);
+    
 }
 
 struct option longopts[] = {
@@ -81,7 +91,7 @@ void parameters(int argc,char *argv[], PAR *par){
 }
 int main(int argc, char *argv[]) {
     //PARAMETERS
-    PAR *par =(PAR*) malloc(sizeof(PAR));
+  par =(PAR*) malloc(sizeof(PAR));
 	parameters(argc,argv,par);
 	
 	

@@ -12,7 +12,7 @@ SYMB_HEADER **symbole_header(FILE* fichier, SEC_HEADER* symb_tab, SEC_HEADER* st
     int i = 0;
     int idxName;
     int LONGUEUR_SYMB = 16;// 16 = size of a line in the symbols tab (bytes)
-    int nbr_symb = SYMB_SIZE / LONGUEUR_SYMB;
+    nbr_symb = SYMB_SIZE / LONGUEUR_SYMB;
     
     //Allocation
     SYMB_HEADER ** symbole = (SYMB_HEADER **) malloc(nbr_symb * (sizeof (SYMB_HEADER)));

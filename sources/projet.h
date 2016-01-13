@@ -172,3 +172,12 @@ HEADER *hed;
 SEC_HEADER **sections;
 
 SYMB_HEADER **symb;
+
+SEC_HEADER** rel_sections;
+
+REL ** rel_section;
+
+PAR *par;
+
+int nbr_rel;
+int nbr_symb;//nombre de symboles dans la table
