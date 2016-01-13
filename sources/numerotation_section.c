@@ -1,6 +1,75 @@
 
 #include "projet.h"
 
+void implantation(SEC_HEADER ** sections, int nbSecs,  SYMB_HEADER ** symtab, FILE *fichier)
+{
+  int nb_rel_secs = 0, i = 0, nb_entries = 0, j = 0, pos = 0, word = 0;
+  char oct = 0;
+  REL ** rel_entries;
+  FILE * fres = fopen("test2.o","w");
+  SEC_HEADER ** rel_sections = get_rel_sections(sections, nbSecs, &nb_rel_secs);
+
+  for(i = 0; i < nb_rel_secs; i++) // Each REL section
+  {
+    rel_entries = NULL; // TODO : optimize memory management 
+    rel_entries = get_rel_entries(rel_sections[i], &nb_entries);
+    
+
+    while(pos < htobe32(sections[htobe32(rel_sections[i]->sh_info)]->sh_offset))
+    {
+      oct = 0;
+      fread(&oct,1,1,fichier);
+      fwrite(&oct,1,1,fres);
+      pos++;
+    }
+
+    int s = 0, a = 0, t = 0, p = 0;
+    unsigned char rel_type;
+    
+    for(j = 0; j < nb_entries; j++) // Each entry
+    {
+      while(pos < htobe32(sections[htobe32(rel_sections[i]->sh_info)]->sh_offset) + htobe32(rel_entries[j]->r_offset))
+      {
+	oct = 0;
+	fread(&oct,1,1,fichier);
+	fwrite(&oct,1,1,fres);
+	pos++;
+      }
+      word = 0;
+      fread(&word,sizeof(int),1,fichier);
+      s = htobe32(symtab[htobe32(rel_entries[j]->r_info) >> 8]->st_value);
+      a = htobe32(word);
+      t = (symtab[htobe32(rel_entries[j]->r_info) >> 8]->st_info & 0xf) == 2;
+      //printf("%x\n", symtab[htobe32(rel_entries[j]->r_info) >> 8]->st_value);
+      p = pos;
+      rel_type = (unsigned char) htobe32(rel_entries[j]->r_info);
+
+      if(rel_type == 2) // TODO : Check architecture ARM/PC
+	word = (a + s) | t; // (S + A) | T
+      else if(rel_type == 5 || rel_type == 8)
+	word = a + s; // S + A
+      else if(rel_type == 28 || rel_type == 29)
+	word = ((a + s) | t) - p; // ((S + A) | T) - P
+      else
+	printf("Type non reconnu !\n");
+
+
+      word = htobe32(word);
+      fwrite(&word,sizeof(int),1,fres);
+      pos += 4;
+    } 
+  }
+
+  while(!feof(fichier))
+  {
+    oct = 0;
+    fread(&oct,1,1,fichier);
+    fwrite(&oct,1,1,fres);
+    pos++;
+  }
+  fclose(fres);
+}
+
 int * get_index(SYMB_HEADER ** symb, SEC_HEADER ** sections, int nbSecs, int nb_rel_sec)
 {
   int i = 0, nbInx = 0, j = 0, tmp = 0;
@@ -56,14 +125,14 @@ void num_section(HEADER * hdr, SEC_HEADER ** sections, int nb_rel_secs, SYMB_HEA
   short nb = 0;
   fread(&nb,sizeof(short),1,fichier); // Change the section number
   nb = htobe16(nb) - nb_rel_secs;
-  //printf("%d\n",htobe16(nb));
+
   nb = htobe16(nb);
   fwrite(&nb,sizeof(short),1,fres);
   nb = 0;
 		
   fread(&nb,sizeof(short),1,fichier); // Change the section name position
   nb = htobe16(nb) - nb_rel_secs;
-  //printf("%d\n",nb);
+
   nb = htobe16(nb);
   fwrite(&nb,sizeof(short),1,fres);
   nb = 0;
@@ -100,7 +169,7 @@ void num_section(HEADER * hdr, SEC_HEADER ** sections, int nb_rel_secs, SYMB_HEA
       symbTab = htobe32(word);
       word = htobe32(word) - (nb_rel_secs*hdr->e_shentsize);
       word = htobe32(word);
-      //printf("%d\n",word);
+      
       fwrite(&word,sizeof(int),1,fres);
       word = 0;
 
@@ -113,7 +182,7 @@ void num_section(HEADER * hdr, SEC_HEADER ** sections, int nb_rel_secs, SYMB_HEA
       fread(&word,sizeof(int),1,fichier); // Read link part
       word = htobe32(word) - nb_rel_secs;
       word = htobe32(word);
-      //printf("%d\n",word);
+      
       fwrite(&word,sizeof(int),1,fres);
       word = 0;
       for(l = 0; l < hdr->e_shentsize/10*3; l++){
@@ -182,6 +251,7 @@ void num_section(HEADER * hdr, SEC_HEADER ** sections, int nb_rel_secs, SYMB_HEA
     fread(&word,sizeof(int),1,fichier);
     word = htobe32(word)+htobe32(sections[symb[k]->st_shndx]->sh_offset);
     word = htobe32(word);
+    symb[k]->st_value = word;
     fwrite(&word,sizeof(int),1,fres);
     word = 0;
     for(l = 0; l < 6; l++)
@@ -204,5 +274,9 @@ void num_section(HEADER * hdr, SEC_HEADER ** sections, int nb_rel_secs, SYMB_HEA
   }
   free(index);
   fclose(fres);
-  //}
+  fres = fopen("test.o","r");
+  implantation(sections, nbSecs, symb, fres);
+  fclose(fres);
 }
+
+
