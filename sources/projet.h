@@ -177,6 +177,10 @@ SEC_HEADER** rel_sections;
 
 REL ** rel_section;
 
+REL **rela_sections;
+
+REL **disp_rel_sections;
+
 PAR *par;
 
 int nbr_rel;

@@ -16,8 +16,18 @@ void desalloc() {
  
     free(rel_sections);
     
+    /*for (i = 0; i < hed->e_shnum; i++) {
+        free(disp_rel_sections[i]);
+      }*/
+    free(disp_rel_sections);
+    
+    /*for (i = 0; i < htobe32(sections[i]->sh_size); i++) {
+        free(rela_sections[i]);
+      }*/
+    free(rela_sections);
+    
     for (i = 0; i < nbr_symb; i++) {
-        free(symb[i]);
+        free(symb[i]); 	
       }
     free(symb);
     
