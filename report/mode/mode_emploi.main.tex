@@ -48,32 +48,34 @@ En sortie deux fichiers test*.o sont crées dans le répertoire courant, un sans
 Enfin le nettoyage des fichier.o se fait avec la commande "make clean".
 
 \section{Structure de fichiers}
+
+
+Le projet s'articule autour de 8 fichiers : 
+
+\begin{itemize}
+
+\item un fichier \textbf{projet.h} contenant la déclaration de toutes les fonctions et structures du projet
+
+\item un fichier \textbf{read\_header.c} contenant les fonctions nécessaires à la lecture du header d'un fichier ELF (partie 1)
+
+\item un fichier \textbf{section\_header.c} contenant les fonctions nécessaires à la lecture de la table des sections (partie 2)
+
+\item un fichier \textbf{read\_section.c} contenant les fonctions nécessaires à la lecture du contenu des sections (partie 3)
+
+\item un fichier \textbf{symbolheader.c} contenant les fonctions nécessaires à la lecture des symboles du fichier ELF (partie 4)
+
+\item un fichier \textbf{rel.c} contenant les fonctions nécessaires à la lecture des sections de réimplémentation (partie 5)
+
+\item un fichier \textbf{display.c} permettant d'afficher le résultat de chacune des tâches précédentes
+
+\item un fichier \textbf{projet.c} contenant la fonction principale du projet. Cette fonction appelle les fonctions de tous les autres fichiers.
+\end{itemize}
+
 \begin{figure}[!h]
     \begin{center}
         \includegraphics[width=\textwidth]{archi_projet.jpg}
         \caption{Architecture du projet}
     \end{center}
 \end{figure}
-
-Le projet s'articule autour de 8 fichiers : 
-
-\begin{itemize}
-
-\item un fichier projet.h contenant la déclaration de toutes les fonctions et structures du projet
-
-\item un fichier read\_header.c contenant les fonctions nécessaires à la lecture du header d'un fichier ELF (partie 1)
-
-\item un fichier section\_header.c contenant les fonctions nécessaires à la lecture de la table des sections (partie 2)
-
-\item un fichier read\_section.c contenant les fonctions nécessaires à la lecture du contenu des sections (partie 3)
-
-\item un fichier symbolheader.c contenant les fonctions nécessaires à la lecture des symboles du fichier ELF (partie 4)
-
-\item un fichier rel.c contenant les fonctions nécessaires à la lecture des sections de réimplémentation (partie 5)
-
-\item un fichier display.c permettant d'afficher le résultat de chacune des tâches précédentes
-
-\item un fichier projet.c contenant la fonction principale du projet.
-\end{itemize}
 \end{document}
 
