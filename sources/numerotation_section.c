@@ -184,6 +184,7 @@ void num_section(HEADER * hdr, SEC_HEADER ** sections, int nb_rel_secs, SYMB_HEA
     {
       fseek(fichier,hdr->e_shentsize/10*4,SEEK_CUR);
       fread(&word,sizeof(int),1,fichier);
+      assert(sections[k]->sh_offset == word);
       if(htobe32(word) < addrRel)
 	      addrRel = htobe32(word);
       fseek(fichier,hdr->e_shentsize/10*5,SEEK_CUR);
@@ -196,6 +197,7 @@ void num_section(HEADER * hdr, SEC_HEADER ** sections, int nb_rel_secs, SYMB_HEA
       }
 		    
       fread(&word,sizeof(int),1,fichier); // Read link part
+      assert(sections[k]->sh_offset == word);
       symbTab = htobe32(word);
       word = htobe32(word) - (nb_rel_secs*hdr->e_shentsize);
       word = htobe32(word);
@@ -210,6 +212,7 @@ void num_section(HEADER * hdr, SEC_HEADER ** sections, int nb_rel_secs, SYMB_HEA
       }
 		    
       fread(&word,sizeof(int),1,fichier); // Read link part
+      assert(sections[k]->sh_link == word);
       word = htobe32(word) - nb_rel_secs;
       word = htobe32(word);
       
@@ -228,6 +231,7 @@ void num_section(HEADER * hdr, SEC_HEADER ** sections, int nb_rel_secs, SYMB_HEA
 	      oct = 0;
       }
       fread(&word,sizeof(int),1,fichier);
+      assert(sections[k]->sh_offset == word);
       word = htobe32(word) - (nb_rel_secs*hdr->e_shentsize);
       word = htobe32(word);
       fwrite(&word,sizeof(int),1,fres);
@@ -279,6 +283,7 @@ void num_section(HEADER * hdr, SEC_HEADER ** sections, int nb_rel_secs, SYMB_HEA
       oct = 0;
     }
     fread(&word,sizeof(int),1,fichier);
+    assert(symb[k]->st_value == htobe32(word));
     word = htobe32(word)+htobe32(sections[symb[k]->st_shndx]->sh_offset);
     word = htobe32(word);
     symb[k]->st_value = word;
