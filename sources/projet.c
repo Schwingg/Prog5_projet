@@ -166,7 +166,7 @@ int main(int argc, char *argv[]) {
 	        // Step 6 to 9
 	        int a = 0;
 	        get_rel_sections(sections,hed->e_shnum,&a);
-	        num_section(hed,sections,a,symb,fichier);
+	        num_section(hed,sections,a,symb,fichier,par->fich);
 
                 desalloc();
                 return 0;

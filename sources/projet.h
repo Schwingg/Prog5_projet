@@ -176,7 +176,7 @@ void parameters(int argc,char *argv[],PAR *par);
 //help function
 void help();
 ///////////////////////////////////////////////////////////////////////
-void num_section(HEADER * hdr, SEC_HEADER ** sections, int nb_rel_secs, SYMB_HEADER ** symb, FILE * fichier);
+void num_section(HEADER * hdr, SEC_HEADER ** sections, int nb_rel_secs, SYMB_HEADER ** symb, FILE * fichier, char * filename);
 
 HEADER *hed;
 
