@@ -1,0 +1,20 @@
+Test sur un fichier.o 64 bit ARM :
+
+	- Résultat attendu : Le fichier n'est pas lu car il n'est pas en 32 bit. Un message d'erreur doit apparaitre.
+
+	- Résultat obtenu : Le message "Le fichier d'entrée n'est pas un fichier ELF 32 bits ARM." a été affiché et le programme s'arrête.
+
+Test sur un fichier.o 32 bits linux :
+
+	- Résultat obtenu : Message d'erreur sans ouverture du fichier et arrêt du programme.
+
+Test sur un fichier random :
+
+	- Résultat obtenu : Message d'erreur sans ouverture du fichier et arrêt du programme.
+	
+Test sur un fichier example*.o fourni :
+
+	- Résultat attendu : Lecture et affichage des bonnes informations par rapport aux options sur la console.
+											 Création des fichiers de sorties.
+	
+	- Résultat obtenu : Affichage normal des informations voulues. Création de deux fichiers,test.o et test2.o, dans le répertoire courant.
