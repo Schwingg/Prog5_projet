@@ -1,0 +1,45 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[francais]{babel}
+\usepackage{meeting}
+\usepackage{xcolor}
+\setcounter{section}{-1}
+\title{Fonctionnalités du projet}
+
+
+\author{Schwing, Roug\'e, Moulin, Chaput, Toulisse}
+
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Fonctionnalités implémentées}
+
+Les parties 1 à 9 ont été implémentées.
+Les options nécessaires à leur activation sont disponibles dans le manuel d'utilisation.
+
+
+L'option -x (affichage du contenu d'une section) prend obligatoirement un paramètre.
+Cette option ne permet donc d'afficher le contenu des sections qu'une par une.
+
+
+\section{Fonctionnalités non implémentées}
+
+Partie 10: un prototype non fonctionnel est visible dans la branche SimulArm de notre GitHub à l'adresse suivante :
+
+https://github.com/Schwingg/Prog5\_projet
+
+
+Partie 11: Non réalisée.
+
+
+\section{Bugs connus}
+
+Les options attendant un paramètre ont un comportement assez restrictif:
+
+Ainsi,lors de l'exécution la commande "./projet -fh ... " l'option -f (attendant un argument) va prendre h (l'option suivante) comme argument et l'éxécution sera dans le meilleur des cas différente de celle attendue.
+\end{document}
+
