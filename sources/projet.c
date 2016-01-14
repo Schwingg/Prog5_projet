@@ -3,27 +3,19 @@
 
 
 
-//Closes the file
-
+//Closes the file used by the program
 void ferme() {
     fclose(fichier);
 }
 
-//frees the structures
-
+//frees the structures used by the program
 void desalloc() {
     int i;
  
     free(rel_sections);
     
-    /*for (i = 0; i < hed->e_shnum; i++) {
-        free(disp_rel_sections[i]);
-      }*/
     free(disp_rel_sections);
     
-    /*for (i = 0; i < htobe32(sections[i]->sh_size); i++) {
-        free(rela_sections[i]);
-      }*/
     free(rela_sections);
     
     for (i = 0; i < nbr_symb; i++) {
@@ -38,9 +30,9 @@ void desalloc() {
  
     free(hed);
     free(par);
-    
 }
 
+//defines the usable parameters and their specifications
 struct option longopts[] = {
 		{ "header", no_argument, NULL, 'h' },
 		{ "section_header", no_argument, NULL, 'S' },
@@ -52,6 +44,8 @@ struct option longopts[] = {
 		{ NULL, 0, NULL, 0 }
 	};
 
+//parameter handler, initializes the PAR structure
+//each user command activates a boolean
 void parameters(int argc,char *argv[], PAR *par){
     int opt;
     par->header = 0;
@@ -104,32 +98,32 @@ int main(int argc, char *argv[]) {
   par =(PAR*) malloc(sizeof(PAR));
 	parameters(argc,argv,par);
 	
-	
-	//END_OF_PARAMETERS//
     if (argc > 1) {
+        //If the Help command has been activated, just show the help and exit
+        //Else do the calculations    
         if(!par->help){
-            //allocation du header ELF à faire dans read_header.c
+            ///###PHASE1###///
+            
+            //Open the file passed in argv[1] 
             if ((fichier = fopen(par->fich, "r"))) {
-            // Open the file passed in argv[1] 
             } else {
                 printf("impossible de lire le fichier\n");
                 return 1;
             }
             
             //PART 1
-            hed = read_header(fichier); // No error during header reading
+            hed = read_header(fichier);
             if(par->header ==1){
                 display_header(hed);
             }
-            
+            // If the file is an ELF 32 file
             if (hed->ELF == 1 && hed->EI_DATA == 0 && hed->EI_CLASS == 32) {
                 
                 //PART 2
-                //Starting the reading of the section header
-                //Section header allocation in section_header.c           
+                //Reading of the section header          
                 sections = section_header(fichier, hed);
                 if(par->section_head ==1 ){
-                    display_sections_table(hed);
+                    display_sections_table(hed,sections);
                 }
                 
                 //PART 3
@@ -143,7 +137,7 @@ int main(int argc, char *argv[]) {
                         display_sections_name(par->sec_name,hed,sections,fichier);
                     }
                     else{
-                        display_sections_int(par->sec_num,hed,sections,fichier);
+                        display_sections_int(par->sec_num,sections,fichier);
                     }
                 }
                 //PART 4
@@ -163,13 +157,15 @@ int main(int argc, char *argv[]) {
                 }
 
 			    //PART 5
+			    //Reloc sections display
 			    if (par->reloc == 1){
 			    display_rel_a(sections, hed->e_shnum);
                 }
-	        // Step 6 (not finished)
+                
+            ///###PHASE2###///
+	        // Step 6 to 9
 	        int a = 0;
-	        // TODO : optimize the function call to get a
-	        get_rel_sections(sections,hed->e_shnum,&a); // To get a (number of rel section)
+	        get_rel_sections(sections,hed->e_shnum,&a);
 	        num_section(hed,sections,a,symb,fichier);
 
                 desalloc();
@@ -182,7 +178,7 @@ int main(int argc, char *argv[]) {
             }
             
         }
-        else{
+        else{//the -H command has been activated
             help();
         }
     }

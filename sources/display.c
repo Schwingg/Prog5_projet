@@ -3,6 +3,9 @@
 
 
 ////////////////////HEADER///////////////////
+//#Displays the header, using the HEADER structure#//
+//#HEADER contains all the informations needed#//
+//#command : -h#//
 void display_header(HEADER *hed){
     if(hed->ELF == 0){
         printf("This is not an ELF file\n");
@@ -148,7 +151,11 @@ void display_header(HEADER *hed){
 /////////////////////////////////////////////
 
 ////////////////////SECTIONS_TABLE///////////
-void display_sections_table(HEADER* hed){
+//#Displays the sections table, using the HEADER and SEC_HEADER structures#//
+//#HEADER is used for the offset of the sections table and the number of sections#//
+//#SEC_HEADER is used to retrieve the rest of the infos#//
+//#command : -S#//
+void display_sections_table(HEADER* hed,SEC_HEADER **sections){
         int i;
         printf("Position de la table des noms : 0x%04X\n", hed->pos);
         for (i = 0; i < hed->e_shnum; i++) {
@@ -247,6 +254,12 @@ void display_sections_table(HEADER* hed){
 /////////////////////////////////////////////
 
 ////////////////////SECTIONS/////////////////
+//#Displays the selected section, using the HEADER, SEC_HEADER structures and the FILE#//
+//#name is the name of the selected section#//
+//#hed is used as a limit#//
+//#sections contains the name and offset of a section#//
+//#fichier is used to read the infos about the section#//
+//#command : -x#//
 void display_sections_name(char* name,HEADER* hed,SEC_HEADER **sections,FILE* fichier){
     int found = 0;
     int i=0;
@@ -283,7 +296,13 @@ void display_sections_name(char* name,HEADER* hed,SEC_HEADER **sections,FILE* fi
     }
 }
 
-void display_sections_int(int off,HEADER* hed,SEC_HEADER **sections,FILE* fichier){
+
+//#Displays the selected section, using the HEADER, SEC_HEADER structures and the FILE#//
+//#off is the number of the selected section#//
+//#sections contains the name and offset of a section#//
+//#fichier is used to read the infos about the section#//
+//#command : -x#//
+void display_sections_int(int off,SEC_HEADER **sections,FILE* fichier){
     int j,k=0;
     int i =off;
     unsigned int hex = 0x0;;
@@ -312,6 +331,8 @@ void display_sections_int(int off,HEADER* hed,SEC_HEADER **sections,FILE* fichie
 /////////////////////////////////////////////
 
 ////////////////////SYMBOLS//////////////////
+//#Displays the symbols table#//
+//#command : -s#//
 void display_symbols(SEC_HEADER* symb_tab, SEC_HEADER* str_tab, SYMB_HEADER **symbole){
     unsigned long SYMB_SIZE = htobe32(symb_tab->sh_size);
     int i;
@@ -372,6 +393,8 @@ void display_symbols(SEC_HEADER* symb_tab, SEC_HEADER* str_tab, SYMB_HEADER **sy
 /////////////////////////////////////////////
 
 ////////////////////REL//////////////////////
+//#displays the relocation sections informations#//
+//#command : -r#//
 void display_rel_a(SEC_HEADER** sections, int nbSecs){
 	int i = 0, j = 0;
 	
@@ -430,6 +453,8 @@ void display_rel_a(SEC_HEADER** sections, int nbSecs){
 /////////////////////////////////////////////
 
 ////////////////////HELP/////////////////////
+//#displays an help#//
+//#command : -H#//
 void help(){
     printf("////help////\n");
     printf("//commands//\n");

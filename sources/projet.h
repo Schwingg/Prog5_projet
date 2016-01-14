@@ -5,8 +5,6 @@
 #include <getopt.h>
 FILE *fichier;
 ///////////////////////////////MAIN///////////////////////////////////
-
-
 /*
  Allows to quit the program, specifying if a problem occurs
  */
@@ -21,6 +19,9 @@ void desalloc();
 
 ///////////////////////////////PARTIE 1////////////////////////////////
 ///////////////////////////////linked to read_header.c/////////////////
+/*
+ HEADER structure
+ */
 typedef struct {
     int ELF;
     int EI_CLASS;
@@ -43,7 +44,6 @@ typedef struct {
     int elf_ver;
     int flags;
     int pos;
-    
 } HEADER;
 
 
@@ -72,6 +72,9 @@ int read(int octet, int endian);
 
 ///////////////////////////////PARTIE 2////////////////////////////////
 ///////////////////////////////linked to section_header.c//////////////
+/*
+ SECTIONS HEADER structure
+ */
 typedef struct {
     char * sh_name;
     int sh_type;
@@ -86,12 +89,10 @@ typedef struct {
 } SEC_HEADER;
 
 //display function
-void display_sections_table(HEADER* hed);
-
-
+void display_sections_table(HEADER* hed,SEC_HEADER **sections);
 
 /*
- * This program permit to get the header of a section.
+ * This program allows to get the header of a section.
  * You must provide to the program a HEADER structure that
  * contain all the information of the ELF header.
  */
@@ -100,16 +101,21 @@ SEC_HEADER **section_header(FILE *fichier, HEADER *hed);
 
 ///////////////////////////////PARTIE 3////////////////////////////////
 ///////////////////////////////linked to read_section.c////////////////
-//FILE* fichier;
-
-
+/*
+ reads the sections data
+ */
 int read_section(FILE* fichier, SEC_HEADER **sections, HEADER *hed);
+
+//Display functions
 void display_sections_name(char* name,HEADER* hed,SEC_HEADER **sections,FILE* fichier);
-void display_sections_int(int off,HEADER* hed,SEC_HEADER **sections,FILE* fichier);
+void display_sections_int(int off,SEC_HEADER **sections,FILE* fichier);
 ///////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////PARTIE 4////////////////////////////////
 ///////////////////////////////linked to sybol_header.c////////////////
+/*
+ Symbols table structure
+ */
 typedef struct {
     char* st_name;
     unsigned int st_value;
@@ -119,6 +125,7 @@ typedef struct {
     unsigned short st_shndx;
 }SYMB_HEADER;
 
+//display function
 void display_symbols(SEC_HEADER* symb_tab, SEC_HEADER* str_tab, SYMB_HEADER **symbole);
 
 SYMB_HEADER **symbole_header(FILE* fichier, SEC_HEADER* symb_tab, SEC_HEADER* str_tab);
@@ -126,6 +133,9 @@ SYMB_HEADER **symbole_header(FILE* fichier, SEC_HEADER* symb_tab, SEC_HEADER* st
 
 ///////////////////////////////PARTIE 5////////////////////////////////
 ///////////////////////////////linked to rel.c/////////////////////////
+/*
+ relocable sections structure
+ */
 typedef struct {
 	unsigned long r_offset ;
 	unsigned long r_info;
@@ -133,8 +143,7 @@ typedef struct {
 	int rela;
 } REL;
 
-//void display_rel_sections(FILE* fichier, SEC_HEADER** sections, int nbSecs);
-
+//display function
 void display_rel_a(SEC_HEADER** sections, int nbSecs);
 
 SEC_HEADER ** get_rel_sections(SEC_HEADER ** sections, int nbSecs, int * nb_rel_sec);
@@ -145,7 +154,9 @@ REL** get_rel_entries(SEC_HEADER * section, int* nb_entrees);
 
 ///////////////////////////////OPTIONS//////////////////////////////////
 ///////////////////////////////linked to projet.c///////////////////////
-
+/*
+ Commands structure
+ */
 typedef struct {
     int header;
 	int section_head;
@@ -159,13 +170,13 @@ typedef struct {
 	int sec_num;
 } PAR;
 
+//parameters and commands handler
 void parameters(int argc,char *argv[],PAR *par);
 
+//help function
 void help();
-
 ///////////////////////////////////////////////////////////////////////
 void num_section(HEADER * hdr, SEC_HEADER ** sections, int nb_rel_secs, SYMB_HEADER ** symb, FILE * fichier);
-
 
 HEADER *hed;
 
