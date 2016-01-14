@@ -1,0 +1,22 @@
+----------------------------Mode d'emploi----------------------------
+
+Les programmes sont compilés à l'aide de la commande "make".
+Tous les programmes utilitaires sont lancés dans projet.c.
+		
+La commande ./projet permet d'exécuter le programme et comporte plusieurs options d'affichage.
+
+L'option -f est indispensable,doit être suivi du fichier étudié et mis directement après ./projet.	
+"./projet -f "nom_du_fichier"
+
+Les autres options sont mis après le nom du fichier et sont :
+		- h : affiche l'en-tête du fichier
+		- S : affiche les en-têtes de section
+		- s : affiche la table des symboles
+		- r : affiche les informations des tables de réimplatation
+		- H : affiche une aide pour l'utilisation de la commande ./projet
+		- x "numéro ou nom section": Cette option doit être mise en dernière avec un numéro ou nom d'une section à la suite.
+					Elle permet d'afficher le contenu de la section donnée en paramètre.
+
+En sortie deux fichiers test*.o sont crées dans le répertoire courant, un sans les tables de réallocations et un avec toutes les réadressages des sections.
+
+Enfin le nettoyage des fichier.o se fait avec la commande "make clean".
