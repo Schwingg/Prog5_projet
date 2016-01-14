@@ -1,0 +1,35 @@
+Résumé des fichiers et fonctions de la phase 2
+
+Etape 6:
+	on ouvre un nouveau fichier pour y écrire la version modifiée
+	on appelle de la fonction num_section dans le fichier numerotation_section
+	on modifie le nombre de section pour enlever les rel 
+	on modifie le numero de la section de depart
+	on parcourt le section header
+		si la section est un rel, on récupère la plus petite adresse et on saute la section
+		si la section est symtab, on modifie son link et son décalage pour prendre en compte la suppression des rel et on copie le reste
+			on récupère également l'adresse de la table de symbole
+		autrement on modifie le décalage et copie le reste
+	
+Etape 7:
+	on copie jusqu'à arriver à la table de symbole
+	on appelle la fonction get_index dans la même fichier
+		on récupère la table des index des rel
+	on récupère le nombre de rel
+	on parcourt la table des symboles
+		on ajoute la décalage de la section désignée en index à la valeur présente
+		on modifie l'index pour prendre en compte la suppression des rel des sections
+		on copie le reste
+	on continue à copier jusqu'à arriver aux table de relocalisation (rel) où on s'arrête et ferme le fichier
+
+Etape 8-9:
+	à la suite des étapes précédentes dans le même fichier, on ouvre un nouveau fichier pour écrire les réimplantations
+	on appelle la fonction implantation, toujours dans le même fichier
+	on récupère la table de relocalisation (rel) grâce à la fonction get_rel_sections dans rel.c
+	on parcourt la table de rel
+		pour chaque partie de la table, on récupère ses entrées grâce à la fonction get_rel_entries, également dans rel.c
+		on copie le fichier source (celui obtenu après l'étape 7) jusqu'à atteindre la section contenant les parties à modifier
+		pour chaque entrée
+			on copie le fichier source jusqu'à atteindre la partie à modifier
+			on modifie la partie susnommée (pour le calcul, regardez le programme, trop chiant à expliquer)
+	on copier le fichier source jusqu'à arriver à la fin et on ferme le fichier
