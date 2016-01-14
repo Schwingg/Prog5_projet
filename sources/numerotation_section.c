@@ -1,14 +1,17 @@
-
 #include "projet.h"
+#include "assert.h"
 
 // TODO : use example in ARM_runner_example.c
 
-void implantation(SEC_HEADER ** sections, int nbSecs,  SYMB_HEADER ** symtab, FILE *fichier)
+void implantation(SEC_HEADER ** sections, int nbSecs,  SYMB_HEADER ** symtab, FILE *fichier, char * fileres)
 {
   int nb_rel_secs = 0, i = 0, nb_entries = 0, j = 0, pos = 0, word = 0;
   char oct = 0;
   REL ** rel_entries;
-  FILE * fres = fopen("test2.o","w");
+  fileres[0] = 'e';
+  fileres[1] = 'n';
+  fileres[2] = 'd';
+  FILE * fres = fopen(fileres,"w");
   SEC_HEADER ** rel_sections = get_rel_sections(sections, nbSecs, &nb_rel_secs);
 
   for(i = 0; i < nb_rel_secs; i++) // Each REL section
@@ -111,9 +114,29 @@ int * get_index(SYMB_HEADER ** symb, SEC_HEADER ** sections, int nbSecs, int nb_
   return tab_index;
 }
 
-void num_section(HEADER * hdr, SEC_HEADER ** sections, int nb_rel_secs, SYMB_HEADER ** symb, FILE * fichier)
+void num_section(HEADER * hdr, SEC_HEADER ** sections, int nb_rel_secs, SYMB_HEADER ** symb, FILE * fichier, char * filename)
 {
-  FILE* fres = fopen("test.o", "w");
+  int i = 0, a = 0, b = 4;
+  char fileres[strlen(filename)];
+  fileres[0] = 'n';
+  fileres[1] = 'e';
+  fileres[2] = 'w';
+  fileres[3] = '_';
+  
+  for (i = strlen(filename) ; i > 0 ; i--)
+  {
+    if (filename[i-1] == '/')
+    {
+      for (a = i ; a < strlen(filename) ; a++)
+      {
+        fileres[b] = filename[a];
+        b++;
+      }
+      fileres[b] = '\0';
+      break;
+    }
+  }
+  FILE* fres = fopen(fileres, "w");
   int nbSecs = hdr->e_shnum;
 
   fseek(fichier,0,SEEK_SET);
@@ -129,13 +152,15 @@ void num_section(HEADER * hdr, SEC_HEADER ** sections, int nb_rel_secs, SYMB_HEA
 		
   short nb = 0;
   fread(&nb,sizeof(short),1,fichier); // Change the section number
+  assert(htobe16(nb) == hdr->e_shnum);
   nb = htobe16(nb) - nb_rel_secs;
 
-  nb = htobe16(nb);
+  nb = htobe16(nb);	
   fwrite(&nb,sizeof(short),1,fres);
   nb = 0;
 		
   fread(&nb,sizeof(short),1,fichier); // Change the section name position
+  assert(htobe16(nb) == hdr->e_shstrndx);
   nb = htobe16(nb) - nb_rel_secs;
 
   nb = htobe16(nb);
@@ -160,14 +185,14 @@ void num_section(HEADER * hdr, SEC_HEADER ** sections, int nb_rel_secs, SYMB_HEA
       fseek(fichier,hdr->e_shentsize/10*4,SEEK_CUR);
       fread(&word,sizeof(int),1,fichier);
       if(htobe32(word) < addrRel)
-	addrRel = htobe32(word);
+	      addrRel = htobe32(word);
       fseek(fichier,hdr->e_shentsize/10*5,SEEK_CUR);
     }
     else if(strcmp(sections[k]->sh_name,".symtab") == 0){
       for(l = 0; l < hdr->e_shentsize/10*4; l++){
-	fread(&oct,1,1,fichier);
-	fwrite(&oct,1,1,fres);
-	oct = 0;
+	      fread(&oct,1,1,fichier);
+	      fwrite(&oct,1,1,fres);
+	      oct = 0;
       }
 		    
       fread(&word,sizeof(int),1,fichier); // Read link part
@@ -179,9 +204,9 @@ void num_section(HEADER * hdr, SEC_HEADER ** sections, int nb_rel_secs, SYMB_HEA
       word = 0;
 
       for(l = 0; l < hdr->e_shentsize/10; l++){
-	fread(&oct,1,1,fichier);
-	fwrite(&oct,1,1,fres);
-	oct = 0;
+	      fread(&oct,1,1,fichier);
+	      fwrite(&oct,1,1,fres);
+	      oct = 0;
       }
 		    
       fread(&word,sizeof(int),1,fichier); // Read link part
@@ -191,16 +216,16 @@ void num_section(HEADER * hdr, SEC_HEADER ** sections, int nb_rel_secs, SYMB_HEA
       fwrite(&word,sizeof(int),1,fres);
       word = 0;
       for(l = 0; l < hdr->e_shentsize/10*3; l++){
-	fread(&oct,1,1,fichier);
-	fwrite(&oct,1,1,fres);
-	oct = 0;
+	      fread(&oct,1,1,fichier);
+	      fwrite(&oct,1,1,fres);
+	      oct = 0;
       }
     }
     else if(strcmp(sections[k]->sh_name,".strtab") == 0){
       for(l = 0; l < hdr->e_shentsize/10*4; l++){
-	fread(&oct,1,1,fichier);
-	fwrite(&oct,1,1,fres);
-	oct = 0;
+	      fread(&oct,1,1,fichier);
+	      fwrite(&oct,1,1,fres);
+	      oct = 0;
       }
       fread(&word,sizeof(int),1,fichier);
       word = htobe32(word) - (nb_rel_secs*hdr->e_shentsize);
@@ -208,15 +233,15 @@ void num_section(HEADER * hdr, SEC_HEADER ** sections, int nb_rel_secs, SYMB_HEA
       fwrite(&word,sizeof(int),1,fres);
       word = 0;
       for(l = 0; l < hdr->e_shentsize/10*5; l++){
-	fread(&oct,1,1,fichier);
-	fwrite(&oct,1,1,fres);
-	oct = 0;
+	      fread(&oct,1,1,fichier);
+	      fwrite(&oct,1,1,fres);
+	      oct = 0;
       }
     }else{
       for(l = 0; l < hdr->e_shentsize; l++){
-	fread(&oct,1,1,fichier);
-	fwrite(&oct,1,1,fres);
-	oct = 0;
+	      fread(&oct,1,1,fichier);
+	      fwrite(&oct,1,1,fres);
+	      oct = 0;
       }
     }
   }
@@ -279,8 +304,9 @@ void num_section(HEADER * hdr, SEC_HEADER ** sections, int nb_rel_secs, SYMB_HEA
   }
   free(index);
   fclose(fres);
-  fres = fopen("test.o","r");
-  implantation(sections, nbSecs, symb, fres);
+  printf("%s\n",fileres);
+  fres = fopen(fileres,"r");
+  implantation(sections, nbSecs, symb, fres, fileres);
   fclose(fres);
 }
 
