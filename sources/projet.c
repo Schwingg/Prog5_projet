@@ -88,7 +88,7 @@ void parameters(int argc,char *argv[], PAR *par){
 			par->reloc = 1;
 			break;
 		default:
-			fprintf(stderr, "Unrecognized option %c\n", opt);
+			fprintf(stderr, "option non reconnue %c\n", opt);
 			exit(1);
 		}
 	}
@@ -174,6 +174,7 @@ int main(int argc, char *argv[]) {
             } else {// Header reading returned an error
                 ferme();
                 free(hed);
+                printf("Le fichier d'entrée n'est pas un fichier ELF 32 bits ARM.\n");
                 return 1;
             }
             
