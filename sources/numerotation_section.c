@@ -304,7 +304,6 @@ void num_section(HEADER * hdr, SEC_HEADER ** sections, int nb_rel_secs, SYMB_HEA
   }
   free(index);
   fclose(fres);
-  printf("%s\n",fileres);
   fres = fopen(fileres,"r");
   implantation(sections, nbSecs, symb, fres, fileres);
   fclose(fres);
