@@ -39,5 +39,30 @@ En sortie deux fichiers test*.o sont crées dans le répertoire courant, un sans
 
 Enfin le nettoyage des fichier.o se fait avec la commande "make clean".
 
+\section{"Structure de fichiers"}
+\begin{figure}[!h]
+    \begin{center}
+        \includegraphics[width=\textwidth]{archi_projet.jpg}
+        \caption{Nagvis backend configuration}
+    \end{center}
+\end{figure}
+
+Le projet s'articule autour de 8 fichiers : 
+
+un fichier projet.h contenant la déclaration de toutes les fonctions et structures du projet
+
+un fichier read_header.c contenant les fonctions nécessaires à la lecture du header d'un fichier ELF (partie 1)
+
+un fichier section_header.c contenant les fonctions nécessaires à la lecture de la table des sections (partie 2)
+
+un fichier read_section.c contenant les fonctions nécessaires à la lecture du contenu des sections (partie 3)
+
+un fichier symbolheader.c contenant les fonctions nécessaires à la lecture des symboles du fichier ELF (partie 4)
+
+un fichier rel.c contenant les fonctions nécessaires à la lecture des sections de réimplémentation (partie 5)
+
+un fichier display.c permettant d'afficher le résultat de chacune des tâches précédentes
+
+un fichier projet.c contenant la fonction principale du projet.
 \end{document}
 
