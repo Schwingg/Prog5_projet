@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <getopt.h>
+#include <assert.h>
+
 FILE *fichier;
 ///////////////////////////////MAIN///////////////////////////////////
 /*
