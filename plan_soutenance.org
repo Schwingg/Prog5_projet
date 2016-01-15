@@ -1,18 +1,18 @@
 * Intro
-- 1ère partie affichage readelf
-- 2ème partie implantation adresse (analyse doc)
+- Explication rapide 1ère partie affichage readelf
+- Explication rapide 2ème partie implantation adresse (analyse doc)
+- choix specification (ARM/32)
+
+** Contexte équipe
+- Organisation travail
+- Organisation code
 
 * Parties
-- Options/Paramètres (démo)
+- Options/Paramètres/Affichage (démo) (Alexandre)
 - Explication des fichiers générées (test.o et test2.o)
-- ...
+- Vérifications effectués/gestion de la mémoire/assertions/avertissements/erreurs
+- Tests
 
 * Conclusion
 
 * A placer ?
-choix specification (ARM/32) ?
-organisation code ?
-organisation travail ?
-gestion de la mémoire ?
-vérifications effectués ?
-Tests ?
