@@ -1,5 +1,4 @@
 #include "projet.h"
-#include "assert.h"
 
 // TODO : use example in ARM_runner_example.c
 
