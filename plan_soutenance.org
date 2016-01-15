@@ -1,19 +1,23 @@
 * Intro
-- ~30s :: Explication rapide 1ère partie affichage readelf
-- ~30s :: Explication rapide 2ème partie implantation adresse (analyse doc)
-- ~1m :: choix specification (ARM/32/gros boutiste)
 
-** Contexte équipe
-- Organisation travail
-- Organisation code
+** Contexte projet @Nicolas
+- ~30s :: Explication rapide 1ère partie affichage readelf 
+- ~30s :: Explication rapide 2ème partie implantation adresse (analyse doc)
+- ~30s :: choix specification (ARM/32/gros boutiste)
+
+** Contexte équipe @Anthony
+- ~2m :: Organisation travail
+- ~2m :: Organisation code
 
 * Parties
 - ~4m :: Options/Paramètres/Affichage (démo) @Alexandre
 - ~4m :: Explication des fichiers générées (test.o et test2.o) @Albin
 - ~2m :: Vérifications effectués/gestion de la
   mémoire/assertions/avertissements/erreurs (robustesse projet) @Nicolas
-- Tests @Georges
+- ~2m :: Tests @Georges
 
-* Conclusion
-
+* Conclusion @Georges
+- ~30s :: Explications parties manquantes
+- ~30s :: Explications parties implémentées
+- ~30s :: Conclusion debriefing projet
 
